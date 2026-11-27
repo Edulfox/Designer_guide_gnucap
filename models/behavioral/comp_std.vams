@@ -1,0 +1,78 @@
+////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2026 IHP PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// StrongARM Latch Comparator
+//
+////////////////////////////////////////////////////////////////////////
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module strongarm_latch (inp, inn, clk, outp, outn, vdd, vss);
+
+input inp, inn, clk, vdd, vss;
+output outp, outn;
+
+electrical inp, inn, clk;
+electrical outp, outn;
+electrical vdd, vss;
+
+parameter real vclk_th = 0.6;
+parameter real vos = 0.0;
+parameter real tdelay = 200p;
+parameter real trise = 30p;
+parameter real meta = 100u;
+
+real decision = -1.0;
+real vhigh;
+real vlow;
+real voutp_target;
+real voutn_target;
+
+analog begin
+
+    @(cross(V(clk)-vclk_th,+1)) begin
+        if (V(inp)-V(inn)+vos > meta) begin
+            decision = 1.2;
+        end
+        else if (V(inp)-V(inn)+vos < -meta) begin
+            decision = 0;
+        end
+    end
+
+    vhigh = V(vdd);
+    vlow = V(vss);
+    if (V(clk) <= vclk_th) begin
+        voutp_target = vhigh;
+        voutn_target = vhigh;
+    end
+    else begin
+        if (decision > 0.0) begin
+            voutp_target = vhigh;
+            voutn_target = vlow;
+        end
+        else begin
+            voutp_target = vlow;
+            voutn_target = vhigh;
+        end
+    end
+
+    V(outp) <+ transition(voutp_target, tdelay, trise);
+    V(outn) <+ transition(voutn_target, tdelay, trise);
+
+end
+
+endmodule

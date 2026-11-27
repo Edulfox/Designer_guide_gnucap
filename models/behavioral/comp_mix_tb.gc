@@ -1,0 +1,41 @@
+// Mixed-signal clocked comparator testbench
+//
+// The clock is generated on-chip by mix_clock and enabled at 5 ns.
+// INP ramps 0.45 V -> 0.75 V, INN is fixed at 0.6 V, VDD = 1.2 V.
+//
+// Expected:
+//   before 5 ns          clk = 0, outp = outn = 1.2 V
+//   clk high, inp < inn  outp = 0 V,    outn = 1.2 V
+//   clk high, inp > inn  outp = 1.2 V,  outn = 0 V
+//   clk low              outp = outn = 1.2 V (reset)
+
+verilog
+load ./comp_mix.so
+load ./vpwl.so
+load ./vpulse.so
+
+// mgsim/mgvams runtime devices used by the generated models:
+// __va_sw / __va_pot voltage sources and the transition() filter.
+load mgsim/d_va_absdelay.so
+load mgsim/d_vasw.so
+load mgsim/d_vapot.so
+load mgvams/mg_filt_transition.so
+
+options log
+ground gnd
+
+vsource #(.dc(1.2)) VDD_SRC(vdd, gnd)
+vsource #(.dc(0.6)) VINN_SRC(inn, gnd)
+vpwl #(.t0(0.0), .v0(0.45), .t1(120.0e-9), .v1(0.75)) VINP_SRC(inp, gnd)
+vpulse #(.val0(0.0), .val1(5.0), .td(5.0e-9)) EN_SRC(en, gnd)
+
+mix_clock #(.vhigh(1.2), .vlow(0.0), .ven_th(2.5), .half_period(5.0e-9), .trise(10.0e-12), .tfall(10.0e-12)) CLKGEN(clk, en)
+comparator_mix #(.vclk_th(0.6), .vos(0.0), .tdelay(200.0e-12), .trise(20.0e-12), .meta(100.0e-6)) XCOMP(inp, inn, clk, outp, outn, vdd, gnd)
+
+resistor #(.r(1.0e6)) RLOAD_P(outp, gnd)
+resistor #(.r(1.0e6)) RLOAD_N(outn, gnd)
+
+spice
+
+.print tran v(inp) v(inn) v(en) v(clk) v(outp) v(outn)
+.tran 0 120n 0 1p > comp_mix_tran.txt

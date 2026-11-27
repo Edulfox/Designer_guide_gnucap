@@ -1,0 +1,86 @@
+// Copyright 2026 IHP-Open-PDK Authors
+//
+// Licensed under the Apache License, Version 2.0
+
+`include "disciplines.vams"
+
+(*desc="vams vpwl"*)
+module vpwl(p, n);
+
+    output p, n;
+    electrical p, n;
+
+    parameter real dc = 0.0;
+    parameter real mag = 0.0;
+    parameter real phase = 0.0;
+    parameter integer npts = 2 from [1:100];
+
+    parameter real wave0 = 0.0;
+    parameter real wave1 = 0.0;
+    parameter real wave2 = 1.0;
+    parameter real wave3 = 0.0;
+
+    real src;
+    integer j;
+    integer segment_found;
+    integer breakpoint_index;
+
+    analog function real wave_value;
+        input index;
+        integer index;
+        begin
+            case(index)
+                0: wave_value = wave0;
+                1: wave_value = wave1;
+                2: wave_value = wave2;
+                3: wave_value = wave3;
+                default: wave_value = wave3;
+            endcase
+        end
+    endfunction
+
+    analog function real interpolate;
+        input ta, va, tb, vb, now;
+        real ta, va, tb, vb, now;
+        begin
+            if(tb <= ta) begin
+                interpolate = vb;
+            end else begin
+                interpolate = va + (vb - va) * ((now - ta) / (tb - ta));
+            end
+        end
+    endfunction
+
+    analog begin : pwl
+
+        @(initial_step) begin
+            breakpoint_index = 0;
+        end
+
+        @(timer(wave_value(2 * breakpoint_index))) begin
+            if(breakpoint_index < npts - 1) begin
+                breakpoint_index = breakpoint_index + 1;
+            end
+        end
+
+        if(analysis("static") && $param_given(dc)) begin
+            src = dc;
+        end else if(npts <= 1 || $abstime <= wave_value(0)) begin
+            src = wave_value(1);
+        end else begin
+            src = wave_value(2 * npts - 1);
+            segment_found = 0;
+
+            for(j = 0; j < 2 * (npts - 1); j = j + 2) begin
+                if(!segment_found && wave_value(j) <= $abstime && $abstime < wave_value(j + 2)) begin
+                    src = interpolate(wave_value(j), wave_value(j + 1), wave_value(j + 2), wave_value(j + 3), $abstime);
+                    segment_found = 1;
+                end
+            end
+        end
+
+        V(p, n) <+ src;
+        V(p, n) <+ ac_stim("ac", mag);
+    end
+
+endmodule

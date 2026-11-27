@@ -1,0 +1,38 @@
+// StrongARM latch comparator - ramp-input testbench
+//
+// VDD = 1.2 V, INN = 0.6 V, INP ramps 0.45 V -> 0.75 V over 120 ns
+//
+// Expected:
+//   clk low   -> outp = outn = 1.2 V
+//   inp < inn -> outp = 0 V, outn = 1.2 V
+//   inp > inn -> outp = 1.2 V, outn = 0 V
+
+verilog
+load ./comp_std.so
+load ./vpwl.so
+load ./vpulse.so
+
+// mgsim/mgvams runtime devices used by the generated models:
+// __va_sw / __va_pot voltage sources and the transition() filter.
+load mgsim/d_va_absdelay.so
+load mgsim/d_vasw.so
+load mgsim/d_vapot.so
+load mgvams/mg_filt_transition.so
+
+options log
+ground gnd
+
+vsource #(.dc(1.2)) VDD_SRC(vdd, gnd)
+vsource #(.dc(0.6)) VINN_SRC(inn, gnd)
+vpwl #(.t0(0.0), .v0(0.45), .t1(120.0e-9), .v1(0.75)) VINP_SRC(inp, gnd)
+vpulse #(.dc(0.0), .val0(0.0), .val1(1.2), .td(2.0e-12), .rise(10.0e-12), .fall(10.0e-12), .width(5.0e-9), .period(10.0e-9)) VCLK_SRC(clk, gnd)
+
+strongarm_latch #(.vclk_th(0.8), .vos(0.0), .tdelay(200.0e-12), .trise(20.0e-12), .meta(100.0e-6)) XCOMP(inp, inn, clk, outp, outn, vdd, gnd)
+
+resistor #(.r(1.0e6)) RLOAD_P(outp, gnd)
+resistor #(.r(1.0e6)) RLOAD_N(outn, gnd)
+
+spice
+
+.print tran v(inp) v(inn) v(clk) v(outp) v(outn)
+.tran 0 120n 0 1p > comp_std_tran.txt

@@ -1,0 +1,154 @@
+////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2026 IHP PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////
+
+// Mixed-signal clocked comparator.
+//
+// This model extends the behavioral StrongARM latch (comp_std.vams) with
+// the clocked/registered structure of comp/comp_reg:
+//
+//   * mix_clock       - self-contained digital clock generator.  It emits
+//                       a rail-to-rail 0/1 square wave, has a defined
+//                       half period and edge times, and is gated by an
+//                       enable input (clock stops low when disabled).
+//   * comparator_mix  - clocked comparator.  The input difference is
+//                       sampled on the rising clock edge and stored in a
+//                       digitized state (+1 / 0 / -1); the outputs are
+//                       digitalized: they are driven between the supply
+//                       rails with fixed transition times, and both go
+//                       high during the clock-low (reset) phase.
+//
+// The digital state is kept in integers rather than in logic nets, so
+// the model runs in plain gnucap (no verilog/logic mode is needed).
+//
+////////////////////////////////////////////////////////////////////////
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+// Digital clock: 0/1 output, gated by an analog enable.
+module mix_clock(out, en);
+
+output out;
+input en;
+
+electrical out, en;
+
+parameter real vhigh = 1.2;		// clock high level
+parameter real vlow = 0.0;		// clock low level
+parameter real ven_th = 2.5;		// enable threshold
+parameter real half_period = 5n;	// half of the clock period
+parameter real trise = 10p;
+parameter real tfall = 10p;
+parameter real tdelay = 0.0;
+
+integer state = 0;
+
+analog begin
+
+    @(timer(0, half_period)) begin
+        if (V(en) > ven_th) begin
+            state = !state;
+        end
+        else begin
+            state = 0;
+        end
+    end
+
+    @(cross(V(en) - ven_th, -1)) state = 0;
+
+    V(out) <+ transition(state ? vhigh : vlow, tdelay, trise, tfall);
+
+end
+
+endmodule
+
+// Clocked comparator with a digitized decision and rail-to-rail outputs.
+module comparator_mix(inp, inn, clk, outp, outn, vdd, vss);
+
+input inp, inn, clk, vdd, vss;
+output outp, outn;
+
+electrical inp, inn, clk;
+electrical outp, outn;
+electrical vdd, vss;
+
+parameter real vclk_th = 0.6;		// clock decision threshold
+parameter real vos = 0.0;		// input offset
+parameter real meta = 100u;		// metastability window
+parameter real tdelay = 200p;		// clock-to-output delay
+parameter real trise = 20p;		// output transition time
+
+// digitized state: 0 = reset, +1 = inp > inn, -1 = inp < inn
+integer dout = 0;
+
+// clock edge detection state
+integer clk_now;
+integer clk_last = 0;
+
+real vhigh;
+real vlow;
+real voutp_target;
+real voutn_target;
+
+analog begin
+
+    // Detect clock edges from the sampled clock level.  This is more
+    // robust than an event expression when the clock itself is generated
+    // by another behavioral model (mix_clock).
+    clk_now = (V(clk) > vclk_th) ? 1 : 0;
+
+    if (clk_now == 1 && clk_last == 0) begin
+        // Rising edge: sample the input difference and store the result
+        // as a discrete (+1 / -1) value.
+        if (V(inp) - V(inn) + vos > meta) begin
+            dout = 1;
+        end
+        else if (V(inp) - V(inn) + vos < -meta) begin
+            dout = -1;
+        end
+    end
+
+    if (clk_now == 0) begin
+        // Clock low: reset the digitized state.
+        dout = 0;
+    end
+
+    clk_last = clk_now;
+
+    vhigh = V(vdd);
+    vlow = V(vss);
+
+    if (dout == 0) begin
+        voutp_target = vhigh;
+        voutn_target = vhigh;
+    end
+    else if (dout > 0) begin
+        voutp_target = vhigh;
+        voutn_target = vlow;
+    end
+    else begin
+        voutp_target = vlow;
+        voutn_target = vhigh;
+    end
+
+    V(outp) <+ transition(voutp_target, tdelay, trise);
+    V(outn) <+ transition(voutn_target, tdelay, trise);
+
+end
+
+endmodule

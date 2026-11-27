@@ -1,0 +1,37 @@
+// Registered (latched) comparator with gated clock - testbench
+//
+// The clock module is enabled 5 ns after startup; the comparator
+// registers the comparison result on every rising clock edge and
+// resets both outputs high while the clock is low.
+
+load mgsim
+verilog
+load ./comp_reg.so
+load ./vpwl.so
+load ./vpulse.so
+
+// mgsim/mgvams runtime devices used by the generated models:
+// __va_sw / __va_pot voltage sources and the transition() filter.
+// load mgsim/d_va_absdelay.so
+// load mgsim/d_vasw.so
+// load mgsim/d_vapot.so
+// load mgvams/mg_filt_transition.so
+
+options log
+ground gnd
+
+vsource #(.dc(1.2)) VDD_SRC(vdd, gnd)
+vsource #(.dc(0.6)) VINN_SRC(inn, gnd)
+vpwl #(.t0(0.0), .v0(0.45), .t1(120.0e-9), .v1(0.75)) VINP_SRC(inp, gnd)
+vpulse #(.val0(0.0), .val1(5.0), .td(5.0e-9)) EN_SRC(en, gnd)
+
+comparator_reg #(.vclk_th(0.8), .vos(0.0), .tdelay(200.0e-12), .trise(20.0e-12), .meta(100.0e-6)) XCOMP(inp, inn, clk, outp, outn, vdd, gnd)
+clock #(.ven_th(2.5), .vhigh(1.2), .half_period(5.0e-9), .trise(10.0e-12), .tfall(10.0e-12)) CLKGEN(clk, en)
+
+resistor #(.r(1.0e6)) RLOAD_P(outp, gnd)
+resistor #(.r(1.0e6)) RLOAD_N(outn, gnd)
+
+spice
+
+.print tran v(inp) v(inn) v(en) v(clk) v(outp) v(outn)
+.tran 0 120n 0 1p > comp_reg_tran.txt

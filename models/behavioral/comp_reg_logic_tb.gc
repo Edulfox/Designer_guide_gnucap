@@ -1,0 +1,62 @@
+// Digital-logic registered comparator testbench, following the
+// mixed-signal connectmodule style of the IHP SG13G2 gnucap examples.
+//
+//   clk_drive (analog) -> elect_to_logic -> clk_logic
+//   clk    (logic)  -> logic_to_elect -> clk_a  (analog, probed)
+//   outp   (logic)  -> logic_to_elect -> outp_a (analog, probed)
+//   outn   (logic)  -> logic_to_elect -> outn_a (analog, probed)
+//
+// The connectmodules are the Verilog-AMS user modules from the PDK
+// documentation: elect_to_logic samples the analog input against the
+// 0.85 V / 0.25 V logic thresholds, logic_to_elect generates a voltage
+// transition for each logic edge.
+//
+// The comparator itself (comp_reg_logic_ref.vams / comparator_reg) is a
+// mixed-signal model: a logic clock input and logic outputs, sampling the
+// analog input difference on every rising clock edge.
+//
+// VDD = 1.2 V, INN = 0.6 V, INP ramps 0.45 V -> 0.75 V over 120 ns.
+// The electrical clock starts at 6 ns and has a 10 ns period.
+
+load mgsim
+options noincmode
+
+verilog
+load logic/gnucap-logic.so
+
+load ./comp_reg_logic_ref.so
+load ./elect_to_logic.so
+load ./logic_to_elect.so
+load ./vpwl.so
+load ./vpulse.so
+
+// transition() used by logic_to_elect
+load mgvams/mg_filt_transition.so
+
+ground gnd
+
+// --- electrical clock converted to logic, as in the PDK example --------
+vpulse #(.val0(0.0), .val1(1.2), .td(6n), .rise(10p), .fall(10p), .width(5n), .period(10n)) clk_src(clk_drive, gnd);
+elect_to_logic clk_input(clk_drive, clk_logic);
+
+// --- connect modules ----------------------------------------------------
+// logic clock and comparator outputs -> analog for probing / plotting
+logic_to_elect #(.v0(0.0), .v1(1.2), .tr(10p), .tf(10p)) clk_conv(clk_logic, clk_a);
+logic_to_elect #(.v0(0.0), .v1(1.2), .tr(10p), .tf(10p)) outp_conv(outp_logic, outp_a);
+logic_to_elect #(.v0(0.0), .v1(1.2), .tr(10p), .tf(10p)) outn_conv(outn_logic, outn_a);
+
+// --- digital comparator -------------------------------------------------
+comparator_reg #(.vos(0.0), .meta(0.0u)) dut(outp_logic, outn_logic, inp, inn, clk_logic, vdd, vss);
+
+// --- analog sources -----------------------------------------------------
+vsource #(.dc(1.2)) vdd_src(vdd, gnd);
+vsource #(.dc(0.0)) vss_src(vss, gnd);
+vsource #(.dc(0.6)) vref(inn, gnd);
+vpwl #(.t0(0.0), .v0(0.45), .t1(120.0e-9), .v1(0.75)) VINP_SRC(inp, gnd);
+
+// Logic scheduling model. The connectmodule thresholds are explicit in
+// elect_to_logic.vams; output rails and slew are logic_to_elect parameters.
+.model logic logic delay=1p rise=10p fall=10p vmax=1.2 vmin=0.0 thh=0.85 thl=0.25
+
+print tran v(inp) v(inn) v(clk_a) v(outp_a) v(outn_a)
+tran 0 120n 0 10p > comp_reg_logic_tran.txt

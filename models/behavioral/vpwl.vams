@@ -1,0 +1,93 @@
+// (c) Felix Salfelder 2024
+// GPLv3+
+`include "disciplines.vams"
+`include "constants.vams"
+
+(*desc="vams vpwl"*)
+module vpwl(p, n);
+	output p, n;
+	electrical p, n;
+	parameter real dc = 0.;
+	parameter integer npts = 2 from [1:8];
+	// Use the first npts (tN, vN) pairs.
+	parameter real t0 = 0.;
+	parameter real v0 = 0.;
+	parameter real t1 = 1.;
+	parameter real v1 = 1.;
+	parameter real t2 = 1.;
+	parameter real v2 = 1.;
+	parameter real t3 = 1.;
+	parameter real v3 = 1.;
+	parameter real t4 = 1.;
+	parameter real v4 = 1.;
+	parameter real t5 = 1.;
+	parameter real v5 = 1.;
+	parameter real t6 = 1.;
+	parameter real v6 = 1.;
+	parameter real t7 = 1.;
+	parameter real v7 = 1.;
+	(*desc="i"*) real i;
+	(*desc="v"*) real v;
+	(*desc="src"*) real src; // for debugging only.
+	analog function real interp;
+		input ta, va, tb, vb, now;
+		real ta, va, tb, vb, now;
+		begin
+			if (tb <= ta) begin
+				interp = vb;
+			end else begin
+				interp = va + (vb - va) * ((now - ta) / (tb - ta));
+			end
+		end
+	endfunction
+	analog begin : pwl
+		begin : evt
+			@(timer(t0)) begin end
+			@(timer(t1)) begin end
+			@(timer(t2)) begin end
+			@(timer(t3)) begin end
+			@(timer(t4)) begin end
+			@(timer(t5)) begin end
+			@(timer(t6)) begin end
+			@(timer(t7)) begin end
+		end
+
+		if (analysis("static") && $param_given(dc)) begin
+			src = dc;
+		end else if (npts <= 1 || $abstime <= t0) begin
+			src = v0;
+		end else if ($abstime < t1) begin
+			src = interp(t0, v0, t1, v1, $abstime);
+		end else if (npts <= 2) begin
+			src = v1;
+		end else if ($abstime < t2) begin
+			src = interp(t1, v1, t2, v2, $abstime);
+		end else if (npts <= 3) begin
+			src = v2;
+		end else if ($abstime < t3) begin
+			src = interp(t2, v2, t3, v3, $abstime);
+		end else if (npts <= 4) begin
+			src = v3;
+		end else if ($abstime < t4) begin
+			src = interp(t3, v3, t4, v4, $abstime);
+		end else if (npts <= 5) begin
+			src = v4;
+		end else if ($abstime < t5) begin
+			src = interp(t4, v4, t5, v5, $abstime);
+		end else if (npts <= 6) begin
+			src = v5;
+		end else if ($abstime < t6) begin
+			src = interp(t5, v5, t6, v6, $abstime);
+		end else if (npts <= 7) begin
+			src = v6;
+		end else if ($abstime < t7) begin
+			src = interp(t6, v6, t7, v7, $abstime);
+		end else begin
+			src = v7;
+		end
+
+		V(p, n) <+ src;
+		v = V(p, n);
+		i = I(p, n);
+	end
+endmodule

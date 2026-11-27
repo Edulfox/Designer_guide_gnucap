@@ -1,0 +1,20 @@
+Gnucap : The Gnu Circuit Analysis Package.
+Copyright 1982-2025, Albert Davis
+          2020-2025, Felix Salfelder
+The development of Gnucap is funded by NLnet with support from the EC.
+Gnucap comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under the terms of the GNU
+General Public License version 3 or later. See "COPYING" for details.
+main version: logic_nomatrix 2026.11.19
+core-lib version: logic_nomatrix 2026.11.19
+default plugins: logic_nomatrix 2026.11.19
+@@#
+@@@incomplete:/tmp/tmp.XOaCdfpquY:1932:tr_begin
+@@#
+@@@incomplete:../../mgsim/m_wave.h:276:new_transition
+@@#
+@@@incomplete:../../mgsim/m_wave.h:276:new_transition
+@@#
+@@@incomplete:/tmp/tmp.XOaCdfpquY:9948:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.uY2vCvpEF4:4556:tr_advance

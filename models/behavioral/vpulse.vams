@@ -1,0 +1,43 @@
+// (c) Felix Salfelder 2024
+// GPLv3+
+`include "disciplines.vams"
+`include "constants.vams"
+
+(*desc="vams vpulse"*)
+module vpulse(p, n);
+	output p, n;
+	electrical p, n;
+	parameter real dc    =0.;
+	parameter real mag   =1.;
+	parameter real phase =0.;
+	parameter real val0  =0.;
+	parameter real val1  =1.;
+	parameter real td    =0.;
+	parameter real rise  =0.;
+	parameter real fall  =0.;
+	parameter real width =1.;
+	parameter real period=2.;
+	(*desc="i"*) real i;
+	(*desc="v"*) real v;
+	(*desc="vrect"*) real vrect; // for debugging only.
+	analog begin : pulse
+		// real vrect;
+		begin : evt
+			@(timer(td + width + rise, period)) begin
+				vrect = val0;
+			end
+			@(timer(td,  period)) begin
+				vrect = val1;
+			end
+		end
+
+		if(analysis("static") && $param_given(dc)) begin
+         // BUG in Table E.1. not sure what dc is used for.
+			vrect = dc;
+		end
+		v = transition(vrect, 0., rise, fall);
+		V(p,n) <+ v;
+		v = V(p,n);
+		i = I(p,n);
+	end
+endmodule

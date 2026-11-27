@@ -1,0 +1,530 @@
+Gnucap : The Gnu Circuit Analysis Package.
+Copyright 1982-2025, Albert Davis
+          2020-2025, Felix Salfelder
+The development of Gnucap is funded by NLnet with support from the EC.
+Gnucap comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under the terms of the GNU
+General Public License version 3 or later. See "COPYING" for details.
+main version: logic_nomatrix 2026.11.19
+core-lib version: logic_nomatrix 2026.11.19
+default plugins: logic_nomatrix 2026.11.19
+param: already installed, replacing
+stashing as param:0
+parameters: already installed, replacing
+stashing as parameters:0
+parameter: already installed, replacing
+stashing as parameter:0
+__assign: already installed, replacing
+stashing as __assign:0
+__udp: already installed, replacing
+stashing as __udp:0
+and: already installed, replacing
+stashing as and:0
+and: already installed, replacing
+stashing as and:0
+nand: already installed, replacing
+stashing as nand:0
+nand: already installed, replacing
+stashing as nand:0
+or: already installed, replacing
+stashing as or:0
+or: already installed, replacing
+stashing as or:0
+nor: already installed, replacing
+stashing as nor:0
+nor: already installed, replacing
+stashing as nor:0
+xor: already installed, replacing
+stashing as xor:0
+xor: already installed, replacing
+stashing as xor:0
+xnor: already installed, replacing
+stashing as xnor:0
+xnor: already installed, replacing
+stashing as xnor:0
+inv: already installed, replacing
+stashing as inv:0
+inv: already installed, replacing
+stashing as inv:0
+verilog: already installed, replacing
+stashing as verilog:0
+paramset: already installed, replacing
+stashing as paramset:0
+module: already installed, replacing
+stashing as module:0
+macromodule: already installed, replacing
+stashing as macromodule:0
+verilog: already installed, replacing
+stashing as verilog:0
+quit: already installed, replacing
+stashing as quit:0
+exit: already installed, replacing
+stashing as exit:0
+detach_all: already installed, replacing
+stashing as detach_all:0
+sg13g2_lv_nmos_psp: already installed, replacing
+stashing as sg13g2_lv_nmos_psp:0
+sg13g2_lv_pmos_psp: already installed, replacing
+stashing as sg13g2_lv_pmos_psp:0
+nmoscl_psp: already installed, replacing
+stashing as nmoscl_psp:0
+rsil: already installed, replacing
+stashing as rsil:0
+rhigh: already installed, replacing
+stashing as rhigh:0
+rppd: already installed, replacing
+stashing as rppd:0
+cmim_core: already installed, replacing
+stashing as cmim_core:0
+capacitor: already installed, replacing
+stashing as capacitor:0
+capacitor: already installed, replacing
+stashing as capacitor:1
+comp.XM7 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.XM7 is "sg13_lv_nmos from top level"
+comp.XMS4 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.XMS4 is "sg13_lv_pmos from top level"
+comp.XMS1 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.XMS1 is "sg13_lv_pmos from top level"
+comp.XMS2 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.XMS2 is "sg13_lv_pmos from top level"
+comp.XMS3 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.XMS3 is "sg13_lv_pmos from top level"
+comp.x2 is "cc_pair_nmos from top level"
+comp.x3 is "cc_pair_pmos from top level"
+comp.x1 is "diff_pair from top level"
+comp.XM7.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.XM7.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.XM7.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.XMS4.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.XMS4.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.XMS4.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.XMS1.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.XMS1.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.XMS1.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.XMS2.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.XMS2.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.XMS2.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.XMS3.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.XMS3.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.XMS3.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x2.XMA1 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA1 is "sg13_lv_nmos from top level"
+comp.x2.XMA2 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA2 is "sg13_lv_nmos from top level"
+comp.x2.XMA3 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA3 is "sg13_lv_nmos from top level"
+comp.x2.XMA4 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA4 is "sg13_lv_nmos from top level"
+comp.x2.XMB1 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB1 is "sg13_lv_nmos from top level"
+comp.x2.XMB2 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB2 is "sg13_lv_nmos from top level"
+comp.x2.XMB3 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB3 is "sg13_lv_nmos from top level"
+comp.x2.XMB4 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB4 is "sg13_lv_nmos from top level"
+comp.x2.XMA5 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA5 is "sg13_lv_nmos from top level"
+comp.x2.XMA6 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA6 is "sg13_lv_nmos from top level"
+comp.x2.XMA7 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA7 is "sg13_lv_nmos from top level"
+comp.x2.XMA8 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA8 is "sg13_lv_nmos from top level"
+comp.x2.XMB5 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB5 is "sg13_lv_nmos from top level"
+comp.x2.XMB6 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB6 is "sg13_lv_nmos from top level"
+comp.x2.XMB7 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB7 is "sg13_lv_nmos from top level"
+comp.x2.XMB8 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMB8 is "sg13_lv_nmos from top level"
+comp.x2.XMA9 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA9 is "sg13_lv_nmos from top level"
+comp.x2.XMA10 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA10 is "sg13_lv_nmos from top level"
+comp.x2.XMA11 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA11 is "sg13_lv_nmos from top level"
+comp.x2.XMA12 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA12 is "sg13_lv_nmos from top level"
+comp.x2.XMA13 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA13 is "sg13_lv_nmos from top level"
+comp.x2.XMA14 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA14 is "sg13_lv_nmos from top level"
+comp.x2.XMA15 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA15 is "sg13_lv_nmos from top level"
+comp.x2.XMA16 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x2.XMA16 is "sg13_lv_nmos from top level"
+comp.x2.XR1 is "PTAP parasitic resistor paramset"
+comp.x2.XMA1.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA1.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA1.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA2.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA2.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA2.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA3.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA3.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA3.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA4.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA4.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA4.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB1.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB1.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB1.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB2.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB2.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB2.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB3.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB3.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB3.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB4.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB4.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB4.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA5.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA5.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA5.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA6.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA6.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA6.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA7.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA7.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA7.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA8.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA8.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA8.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB5.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB5.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB5.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB6.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB6.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB6.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB7.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB7.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB7.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMB8.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMB8.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMB8.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA9.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA9.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA9.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA10.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA10.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA10.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA11.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA11.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA11.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA12.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA12.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA12.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA13.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA13.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA13.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA14.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA14.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA14.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA15.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA15.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA15.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x2.XMA16.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x2.XMA16.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x2.XMA16.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x3.XMA1 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMA1 is "sg13_lv_pmos from top level"
+comp.x3.XMB1 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMB1 is "sg13_lv_pmos from top level"
+comp.x3.XMA2 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMA2 is "sg13_lv_pmos from top level"
+comp.x3.XMB2 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMB2 is "sg13_lv_pmos from top level"
+comp.x3.XMA3 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMA3 is "sg13_lv_pmos from top level"
+comp.x3.XMA4 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMA4 is "sg13_lv_pmos from top level"
+comp.x3.XMB3 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMB3 is "sg13_lv_pmos from top level"
+comp.x3.XMB4 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMB4 is "sg13_lv_pmos from top level"
+comp.x3.XMD1 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMD1 is "sg13_lv_pmos from top level"
+comp.x3.XMD2 dropped invalid candidate: "sg13_lv_pmos from top level".
+comp.x3.XMD2 is "sg13_lv_pmos from top level"
+comp.x3.XR1 is "NTAP parasitic resistor paramset"
+comp.x3.XMA1.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMA1.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMA1.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMB1.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMB1.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMB1.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMA2.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMA2.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMA2.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMB2.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMB2.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMB2.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMA3.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMA3.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMA3.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMA4.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMA4.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMA4.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMB3.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMB3.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMB3.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMB4.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMB4.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMB4.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMD1.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMD1.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMD1.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x3.XMD2.sg13_lv_pmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x3.XMD2.sg13_lv_pmos dropped invalid candidate: "sg13g2 Low-Voltage PMOS RF paramset".
+comp.x3.XMD2.sg13_lv_pmos is "sg13g2 Low-Voltage PMOS paramset"
+comp.x1.XMA1 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA1 is "sg13_lv_nmos from top level"
+comp.x1.XMA2 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA2 is "sg13_lv_nmos from top level"
+comp.x1.XMA3 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA3 is "sg13_lv_nmos from top level"
+comp.x1.XMA4 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA4 is "sg13_lv_nmos from top level"
+comp.x1.XMB1 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB1 is "sg13_lv_nmos from top level"
+comp.x1.XMB2 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB2 is "sg13_lv_nmos from top level"
+comp.x1.XMB3 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB3 is "sg13_lv_nmos from top level"
+comp.x1.XMB4 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB4 is "sg13_lv_nmos from top level"
+comp.x1.XMA5 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA5 is "sg13_lv_nmos from top level"
+comp.x1.XMA6 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA6 is "sg13_lv_nmos from top level"
+comp.x1.XMA7 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA7 is "sg13_lv_nmos from top level"
+comp.x1.XMA8 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA8 is "sg13_lv_nmos from top level"
+comp.x1.XMB5 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB5 is "sg13_lv_nmos from top level"
+comp.x1.XMB6 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB6 is "sg13_lv_nmos from top level"
+comp.x1.XMB7 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB7 is "sg13_lv_nmos from top level"
+comp.x1.XMB8 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMB8 is "sg13_lv_nmos from top level"
+comp.x1.XMA9 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA9 is "sg13_lv_nmos from top level"
+comp.x1.XMA10 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA10 is "sg13_lv_nmos from top level"
+comp.x1.XMA11 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA11 is "sg13_lv_nmos from top level"
+comp.x1.XMA12 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA12 is "sg13_lv_nmos from top level"
+comp.x1.XMA13 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA13 is "sg13_lv_nmos from top level"
+comp.x1.XMA14 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA14 is "sg13_lv_nmos from top level"
+comp.x1.XMA15 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA15 is "sg13_lv_nmos from top level"
+comp.x1.XMA16 dropped invalid candidate: "sg13_lv_nmos from top level".
+comp.x1.XMA16 is "sg13_lv_nmos from top level"
+comp.x1.XR1 is "PTAP parasitic resistor paramset"
+comp.x1.XMA1.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA1.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA1.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA2.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA2.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA2.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA3.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA3.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA3.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA4.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA4.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA4.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB1.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB1.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB1.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB2.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB2.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB2.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB3.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB3.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB3.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB4.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB4.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB4.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA5.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA5.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA5.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA6.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA6.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA6.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA7.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA7.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA7.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA8.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA8.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA8.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB5.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB5.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB5.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB6.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB6.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB6.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB7.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB7.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB7.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMB8.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMB8.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMB8.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA9.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA9.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA9.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA10.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA10.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA10.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA11.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA11.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA11.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA12.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA12.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA12.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA13.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA13.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA13.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA14.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA14.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA14.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA15.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA15.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA15.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+comp.x1.XMA16.sg13_lv_nmos:p0 invalid: rfmode is not "from  1. .. 1."
+comp.x1.XMA16.sg13_lv_nmos dropped invalid candidate: "sg13g2 Low-Voltage NMOS RF paramset".
+comp.x1.XMA16.sg13_lv_nmos is "sg13g2 Low-Voltage NMOS paramset"
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:1934:tr_begin
+open circuit: internal node 140
+open circuit: internal node 155
+open circuit: internal node 170
+open circuit: internal node 185
+open circuit: internal node 200
+open circuit: internal node 215
+open circuit: internal node 230
+open circuit: internal node 245
+open circuit: internal node 260
+open circuit: internal node 275
+open circuit: internal node 290
+open circuit: internal node 305
+open circuit: internal node 320
+open circuit: internal node 335
+open circuit: internal node 350
+open circuit: internal node 365
+did not converge
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+backwards time step
+newtime=1.800000e-11  rejectedtime=2.900000e-11  oldtime=1.000000e-11
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.xJmVXfR16E:5251:tr_advance
+@@#
+@@@incomplete:vpulse.cc:4556:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+@@#
+@@@incomplete:capacitor.cc:3940:tr_advance
+backwards time step
+newtime=3.000000e-10  rejectedtime=4.000000e-10  oldtime=2.000000e-10
+backwards time step
+newtime=5.023000e-09  rejectedtime=5.044000e-09  oldtime=5.021000e-09
+backwards time step
+newtime=1.502300e-08  rejectedtime=1.504400e-08  oldtime=1.502100e-08
+backwards time step
+newtime=2.502300e-08  rejectedtime=2.504400e-08  oldtime=2.502100e-08
+backwards time step
+newtime=3.502300e-08  rejectedtime=3.504400e-08  oldtime=3.502100e-08
+backwards time step
+newtime=4.502300e-08  rejectedtime=4.504400e-08  oldtime=4.502100e-08
+backwards time step
+newtime=5.502300e-08  rejectedtime=5.504400e-08  oldtime=5.502100e-08
+backwards time step
+newtime=6.502300e-08  rejectedtime=6.504400e-08  oldtime=6.502100e-08
+backwards time step
+newtime=7.502300e-08  rejectedtime=7.504400e-08  oldtime=7.502100e-08
+backwards time step
+newtime=8.502300e-08  rejectedtime=8.504400e-08  oldtime=8.502100e-08
+backwards time step
+newtime=9.502300e-08  rejectedtime=9.504400e-08  oldtime=9.502100e-08
+backwards time step
+newtime=1.050230e-07  rejectedtime=1.050440e-07  oldtime=1.050210e-07
+backwards time step
+newtime=1.150230e-07  rejectedtime=1.150440e-07  oldtime=1.150210e-07

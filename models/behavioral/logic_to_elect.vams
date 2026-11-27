@@ -1,0 +1,41 @@
+////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2026 IHP PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////
+
+// Logic-to-electrical connectmodule, as used in the IHP SG13G2 gnucap
+// mixed-signal examples.  Each logic edge produces a voltage transition.
+`include "disciplines.vams"
+
+connectmodule logic_to_elect(cm, el);
+parameter real v0 = 0.0;
+parameter real v1 = 1.2;
+parameter real tr = 10p;
+parameter real tf = 10p;
+input cm;
+output el;
+logic cm;
+electrical el;
+(* _state="yes", desc="outval" *) real out_val;
+
+analog initial out_val = v0;
+always @(posedge(cm)) out_val = v1;
+always @(negedge(cm)) out_val = v0;
+
+analog begin
+V(el) <+ transition(out_val, 0, tr, tf);
+end
+endconnectmodule

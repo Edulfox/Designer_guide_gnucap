@@ -1,0 +1,157 @@
+//////////////////////////////////////////////////////////////////////
+//
+// Copyright 2026 IHP PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// IHP SG13G2 transistor-level StrongARM latch comparator
+//
+// Source: comp/comparator-pdk/tb_CMP7345.va (testbench module removed;
+// the top-level deck lives in CMP7345_tb.gc)
+//
+//////////////////////////////////////////////////////////////////////
+
+// load model plugins
+load sg13g2_moslv_paramset.so
+load sg13g2_moslv_rf_paramset.so
+load resistor_paramset.so
+load capacitor_paramset.so
+load idc.so
+load vams/capacitor.so
+load vams/vpulse.so
+load vams/vsine.so
+load ./vpwl.so
+
+include sg13g2_moslv_module.va
+include capacitor_module.va
+
+module cc_pair_nmos(Id2, Id1, vss, Is1, Is2, vdd);
+  inout Id2, Id1, vss, Is1, Is2, vdd;
+  electrical Id2, Id1, vss, Is1, Is2, vdd;
+  electrical \sub! ;
+
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA1(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA2(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA3(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA4(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB1(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB2(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB3(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB4(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA5(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA6(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA7(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA8(Id1, Id2, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB5(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB6(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB7(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB8(Id2, Id1, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA9(vss, vss, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA10(vss, vss, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA11(vss, vss, Is2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA12(vss, vss, Is1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA13(Is1, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA14(Is2, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA15(Is2, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA16(Is1, vss, vss, \sub! );
+
+  ptap1 #(.w(1.0e-6), .l(1.0e-6)) XR1(vss, \sub! );
+endmodule
+
+module cc_pair_pmos(Id2, Id1, Is2, Is1, vdd, vss);
+  inout Id2, Id1, Is2, Is1, vdd, vss;
+  electrical Id2, Id1, Is2, Is1, vdd, vss;
+  electrical nw;
+
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA1(Id1, Id2, Is1, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB1(Id2, Id1, Is2, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA2(Id1, Id2, Is1, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB2(Id2, Id1, Is2, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA3(Id1, Id2, Is1, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA4(Id1, Id2, Is1, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB3(Id2, Id1, Is2, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB4(Id2, Id1, Is2, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMD1(vdd, vdd, vdd, nw);
+  sg13_lv_pmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMD2(vdd, vdd, vdd, nw);
+
+  ntap1 #(.w(0.78e-6), .l(0.78e-6)) XR1(vdd, nw);
+endmodule
+
+module diff_pair(Id1, Id2, \v+ , \v- , vdd, tail, vss);
+  inout Id1, Id2, \v+ , \v- , vdd, tail, vss;
+  electrical Id1, Id2, \v+ , \v- , vdd, tail, vss;
+  electrical \sub! ;
+
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA1(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA2(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA3(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA4(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB1(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB2(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB3(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB4(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA5(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA6(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA7(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA8(Id2, \v- , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB5(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB6(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB7(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMB8(Id1, \v+ , tail, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA9(vss, vss, Id2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA10(vss, vss, Id1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA11(vss, vss, Id1, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA12(vss, vss, Id2, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA13(Id2, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA14(Id1, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA15(Id1, vss, vss, \sub! );
+  sg13_lv_nmos #(.w(1.0u), .l(0.26u), .ng(1),  .mm_ok(0)) XMA16(Id2, vss, vss, \sub! );
+
+  ptap1 #(.w(1.0e-6), .l(1.0e-6)) XR1(\sub! , vss);
+endmodule
+module CMP7345_7T(vdd, vout1, vout2, \v+ , \v- , clk, vss);
+  inout vdd, vout1, vout2, \v+ , \v- , clk, vss;
+  electrical vdd, vout1, vout2, \v+ , \v- , clk, vss;
+  electrical net1, P, Q;
+
+  sg13_lv_nmos #(.w(6u), .l(0.13u), .ng(6),  .mm_ok(0)) XM7(net1, clk, vss, vss);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS4(vout2, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS1(P, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS2(Q, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS3(vout1, clk, vdd, vdd);
+
+  sg13_lv_nmos #(.w(8u), .l(0.26u), .ng(1),  .mm_ok(0)) XM1(P, \v+ , net1, vss);
+  sg13_lv_nmos #(.w(8u), .l(0.26u), .ng(1),  .mm_ok(0)) XM2(Q, \v- , net1, vss);
+  sg13_lv_nmos #(.w(8u), .l(0.26u), .ng(1),  .mm_ok(0)) XM3(vout1, vout2 , P, vss);
+  sg13_lv_nmos #(.w(8u), .l(0.26u), .ng(1),  .mm_ok(0)) XM4(vout2, vout1 , Q, vss);
+  sg13_lv_pmos #(.w(4u), .l(0.26u), .ng(1),  .mm_ok(0)) XM5(vout1, vout2 , vdd, vdd);
+  sg13_lv_pmos #(.w(4u), .l(0.26u), .ng(1),  .mm_ok(0)) XM6(vout2, vout1 , vdd, vdd);
+
+endmodule
+
+module CMP7345(vdd, vout1, vout2, \v+ , \v- , clk, vss);
+  inout vdd, vout1, vout2, \v+ , \v- , clk, vss;
+  electrical vdd, vout1, vout2, \v+ , \v- , clk, vss;
+  electrical net1, P, Q;
+
+  sg13_lv_nmos #(.w(6u), .l(0.13u), .ng(6),  .mm_ok(0)) XM7(net1, clk, vss, vss);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS4(vout2, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS1(P, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS2(Q, clk, vdd, vdd);
+  sg13_lv_pmos #(.w(3.0u), .l(0.13u), .ng(3),  .mm_ok(0)) XMS3(vout1, clk, vdd, vdd);
+
+  cc_pair_nmos x2(vout2, vout1, vss, P, Q, vdd);
+  cc_pair_pmos x3(vout2, vout1, vdd, vdd, vdd, vss);
+  diff_pair x1(P, Q, \v+ , \v- , vdd, net1, vss);
+endmodule
+

@@ -1,0 +1,53 @@
+// Transistor-level (SG13G2 PDK) StrongARM comparator testbench
+//
+// VDD = 1.2 V, common mode 0.6 V
+// Input ramp: vinn sweeps from -0.1 V to +0.1 V around cm over 10 ns,
+// crossing vinp (0.6 V) at 5 ns.  The clock samples at 0 ns (vinn = 0.5 V)
+// and at 10 ns (vinn = 0.7 V), so both decisions appear in one 20 ns run.
+// Clock: 1.2 V, 50 % duty cycle, 10 ns period
+//
+// The comparator is instantiated at top level so that its inputs
+// (vinp, vinn) and outputs (vout1, vout2) can be probed directly.
+//
+// The PDK model plugins are rebuilt locally by build.sh from the
+// IHP-Open-PDK Verilog-A sources, and the include files in pdk/ are
+// patched copies (see build.sh).
+
+verilog
+
+// Verilog-AMS runtime devices and filters used by the PDK models.
+load mgsim
+load mgvams/mg_filt_noise.so
+
+include ./CMP7345.va
+
+include cornerRES.va
+include cornerMOSlv.va
+include cornerCAP.va
+
+res_typ  corner_res();
+cap_typ  corner_cap();
+moslv_tt corner_moslv();
+
+ground gnd
+
+CMP7345 comp(vdd, vout1, vout2, vinp, vinn, clk, vss)
+
+vsource #(.dc(1.2)) vdd1(vdd, gnd)
+vsource #(.dc(0.0)) vss1(vss, gnd)
+vsource #(.dc(0.6)) vcm(cm, gnd)
+vsource #(.dc(0.0)) v3(vinp, cm)
+vpwl #(.npts(2), .wave0(0), .wave1(-0.1), .wave2(120n), .wave3(0.1)) v4(vinn, cm)
+vpulse #(.val0(0.0), .val1(1.2), .rise(10p), .fall(10p), .width(5n), .period(10n)) v2(clk, gnd)
+capacitor #(.c(10f)) c1(vout1, gnd)
+capacitor #(.c(10f)) c2(vout2, gnd)
+
+options log
+options abstol=10p
+options trtol=2.0
+options gmin=10p
+options vmin=0
+options vmax=0
+
+print tran v(clk) v(vinp) v(vinn) v(vout1) v(vout2)
+tran 200p 120n > CMP7345_tran.txt

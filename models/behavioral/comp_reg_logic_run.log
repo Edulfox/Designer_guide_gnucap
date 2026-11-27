@@ -1,0 +1,430 @@
+Gnucap : The Gnu Circuit Analysis Package.
+Copyright 1982-2025, Albert Davis
+          2020-2025, Felix Salfelder
+The development of Gnucap is funded by NLnet with support from the EC.
+Gnucap comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under the terms of the GNU
+General Public License version 3 or later. See "COPYING" for details.
+main version: logic_nomatrix 2026.11.19
+core-lib version: logic_nomatrix 2026.11.19
+default plugins: logic_nomatrix 2026.11.19
+param: already installed, replacing
+stashing as param:0
+parameters: already installed, replacing
+stashing as parameters:0
+parameter: already installed, replacing
+stashing as parameter:0
+__assign: already installed, replacing
+stashing as __assign:0
+__udp: already installed, replacing
+stashing as __udp:0
+and: already installed, replacing
+stashing as and:0
+and: already installed, replacing
+stashing as and:0
+nand: already installed, replacing
+stashing as nand:0
+nand: already installed, replacing
+stashing as nand:0
+or: already installed, replacing
+stashing as or:0
+or: already installed, replacing
+stashing as or:0
+nor: already installed, replacing
+stashing as nor:0
+nor: already installed, replacing
+stashing as nor:0
+xor: already installed, replacing
+stashing as xor:0
+xor: already installed, replacing
+stashing as xor:0
+xnor: already installed, replacing
+stashing as xnor:0
+xnor: already installed, replacing
+stashing as xnor:0
+inv: already installed, replacing
+stashing as inv:0
+inv: already installed, replacing
+stashing as inv:0
+verilog: already installed, replacing
+stashing as verilog:0
+paramset: already installed, replacing
+stashing as paramset:0
+module: already installed, replacing
+stashing as module:0
+macromodule: already installed, replacing
+stashing as macromodule:0
+verilog: already installed, replacing
+stashing as verilog:0
+quit: already installed, replacing
+stashing as quit:0
+exit: already installed, replacing
+stashing as exit:0
+detach_all: already installed, replacing
+stashing as detach_all:0
+load logic/gnucap-logic.so
+     ^ ? "/usr/local/lib/gnucap/logic/gnucap-logic.so": already loaded, replacing
+__assign: already installed, replacing
+stashing as __assign:0
+__udp: already installed, replacing
+stashing as __udp:0
+and: already installed, replacing
+stashing as and:0
+and: already installed, replacing
+stashing as and:0
+nand: already installed, replacing
+stashing as nand:0
+nand: already installed, replacing
+stashing as nand:0
+or: already installed, replacing
+stashing as or:0
+or: already installed, replacing
+stashing as or:0
+nor: already installed, replacing
+stashing as nor:0
+nor: already installed, replacing
+stashing as nor:0
+xor: already installed, replacing
+stashing as xor:0
+xor: already installed, replacing
+stashing as xor:0
+xnor: already installed, replacing
+stashing as xnor:0
+xnor: already installed, replacing
+stashing as xnor:0
+inv: already installed, replacing
+stashing as inv:0
+inv: already installed, replacing
+stashing as inv:0
+clk_input._na0_v_cm: can't find subckt: logic_na0_v_cm1, forcing digital
+@@#
+@@@incomplete:/tmp/tmp.XOaCdfpquY:1932:tr_begin
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.uY2vCvpEF4:4556:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.XOaCdfpquY:9948:tr_advance
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:2431:6.009e-09 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:4614:1.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:6169:1.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:7726:2.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:9281:2.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:10841:3.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:12396:3.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:13953:4.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:15508:4.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:17065:5.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:18620:5.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:20177:6.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:21732:6.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:23289:7.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:24844:7.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:26401:8.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:27956:8.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:29513:9.1019e-08 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:31068:9.6009e-08 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:32625:1.01019e-07 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:34180:1.06009e-07 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:35737:1.11019e-07 non-event state change to 0
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.3mNvoVMvIC:1411:accept
+@@#
+@@@unreachable:../../logic/d_logic.cc:785:accept
+clk_input._na0_v_cm:37292:1.16009e-07 non-event state change to 3
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
+@@#
+@@@incomplete:/tmp/tmp.xnznEFV7hU:1411:accept
