@@ -1,0 +1,47 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Eight-bit scalar form of the N-bit DAC from Chapter 3, Listing 27.
+// The book's analog input bus is expanded explicitly because Gnucap/modelgen
+// does not provide general signal arrays in the current flow.
+module dac (out, b0, b1, b2, b3, b4, b5, b6, b7, clk);
+   parameter real fullscale = 1.0;
+   parameter real td = 0.0;
+   parameter real tt = 0.0;
+   parameter real vdd = 5.0;
+   parameter real thresh = vdd/2.0;
+   parameter integer dir = 1;
+   output out;
+   input b0, b1, b2, b3, b4, b5, b6, b7, clk;
+   electrical out, b0, b1, b2, b3, b4, b5, b6, b7, clk;
+   real aout;
+   analog begin
+      @(cross(V(clk) - thresh, dir) or initial_step) begin
+         aout = 0.0;
+         if (V(b7) > thresh) aout = aout + fullscale/2.0;
+         if (V(b6) > thresh) aout = aout + fullscale/4.0;
+         if (V(b5) > thresh) aout = aout + fullscale/8.0;
+         if (V(b4) > thresh) aout = aout + fullscale/16.0;
+         if (V(b3) > thresh) aout = aout + fullscale/32.0;
+         if (V(b2) > thresh) aout = aout + fullscale/64.0;
+         if (V(b1) > thresh) aout = aout + fullscale/128.0;
+         if (V(b0) > thresh) aout = aout + fullscale/256.0;
+      end
+      V(out) <+ transition(aout, td, tt);
+   end
+endmodule

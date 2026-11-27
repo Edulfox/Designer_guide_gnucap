@@ -1,0 +1,50 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional and high-speed stress test for the digital inverter.
+// The DUT is driven directly without auxiliary logic gates.
+// A 1 GHz input with 100 ps HIGH pulses verifies both inversion
+// and response to narrow digital pulses.
+
+load mgsim
+load vams/vpulse.so
+load ./inverter.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=5p fall=5p vmax=1
+
+// Direct electrical stimulus:
+// frequency = 1 GHz
+// period = 1 ns
+// HIGH width = 100 ps
+// rise/fall time = 10 ps
+vpulse #(.val0(0.0), .val1(1.0), .td(500p), .rise(10p), .fall(10p), .width(200p), .period(1n)) source(in_drive,gnd);
+
+// Convert the electrical stimulus directly to logic.
+c_a_d #(.model("logic")) input_converter(a,in_drive);
+
+// Device under test.
+inverter dut(q,a);
+
+// Electrical probes for the real input and output waveforms.
+c_d_a #(.model("logic")) input_probe(a_probe,a);
+c_d_a #(.model("logic")) output_probe(q_probe,q);
+
+print tran v(in_drive) v(a_probe) v(q_probe) l(a) l(q) iter(0)
+tran 0 10n 1p > results/inverter.txt

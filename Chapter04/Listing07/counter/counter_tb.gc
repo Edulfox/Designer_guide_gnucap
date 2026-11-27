@@ -1,0 +1,50 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the digital counter.
+// Two instances use the same clock with different maxcount values.
+// This verifies repeated counting and parameterized division.
+
+load mgsim
+load vams/vpulse.so
+load ./counter.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// 100 MHz input clock: 10 ns period.
+vpulse #(.val0(0.0), .val1(1.0), .td(5n), .rise(10p), .fall(10p), .width(5n), .period(10n)) clock_source(clk_drive,gnd);
+
+// Electrical-to-digital conversion.
+c_a_d #(.model("logic")) clock_converter(clk,clk_drive);
+
+// Counter with one output pulse every 4 rising clock edges.
+counter #(.maxcount(4)) counter_4(out4,clk);
+
+// Original counter configuration: one output pulse every 9 rising clock edges.
+counter #(.maxcount(9)) counter_9(out9,clk);
+
+// Digital-to-electrical probes.
+c_d_a #(.model("logic")) clock_probe(clk_probe_v,clk);
+c_d_a #(.model("logic")) out4_probe(out4_probe_v,out4);
+c_d_a #(.model("logic")) out9_probe(out9_probe_v,out9);
+
+// Save electrical and logic representations.
+print tran v(clk_drive) v(clk_probe_v) v(out4_probe_v) v(out9_probe_v) l(clk) l(out4) l(out9) iter(0)
+tran 0 250n 10p > results/counter.txt

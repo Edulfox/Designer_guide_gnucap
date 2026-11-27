@@ -1,0 +1,169 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Bidirectional mixed-signal interface based on
+// The Designer's Guide to Verilog-AMS, Listing 19.
+//
+// The original connectmodule implicitly separates digital drivers from
+// digital receivers. Current Gnucap modelgen does not provide that
+// connectmodule code-generation path, therefore dout is exposed explicitly
+// as the receiver-side digital signal.
+//
+// vstate_probe and istate_probe are validation-only electrical outputs.
+// They expose the internal Listing 19 state machine so that xdelay,
+// zdelay, voltage-region detection, and current qualification can be
+// verified even though dynamic X and Z logic values are not yet supported.
+//
+// State encoding:
+//   vstate = 1 : valid HIGH voltage region
+//   vstate = 2 : X voltage region after xdelay
+//   vstate = 3 : valid LOW voltage region
+//
+//   istate = 0 : current is compatible with high impedance
+//   istate = 1 : current exceeded maxzi for at least zdelay
+
+module bidir(a, d, dout, vstate_probe, istate_probe);
+
+   parameter real v0 = 0.0;
+   parameter real v1 = 5.0;
+   parameter real vx = 2.5;
+   parameter real vz = 5.0;
+
+   parameter real r0 = 1k;
+   parameter real r1 = 1k;
+   parameter real rx = 100;
+   parameter real rz = 1M;
+
+   parameter real tr = 1n;
+   parameter real tf = 1n;
+
+   parameter real vl = 0.5;
+   parameter real vh = 2.7;
+
+   parameter real maxzi = 0.1u;
+
+   parameter real xdelay = 1n;
+   parameter real zdelay = 0.5 * xdelay;
+
+   inout a;
+   inout d;
+   output dout;
+   output vstate_probe;
+   output istate_probe;
+
+   electrical a;
+   electrical vstate_probe;
+   electrical istate_probe;
+
+   logic d;
+   logic dout;
+
+   real v;
+   real r;
+
+   integer vstate;
+   integer istate;
+   integer inXrange;
+   integer outOfZcurrent;
+
+   real xstart;
+   real zstart;
+
+   initial begin
+      v = v0;
+      r = r0;
+      vstate = 2;
+      istate = 0;
+      inXrange = 0;
+      outOfZcurrent = 0;
+      xstart = 0.0;
+      zstart = 0.0;
+   end
+
+   always @(edge(d)) begin
+      if (d) begin
+         v = v1;
+         r = r1;
+      end
+      else begin
+         v = v0;
+         r = r0;
+      end
+   end
+
+   always @(above(V(a) - vh)) begin
+      vstate = 1;
+      inXrange = 0;
+      dout = 1;
+   end
+
+   always @(above(vh - V(a))) begin
+      inXrange = 1;
+      xstart = $abstime;
+   end
+
+   always @(above(V(a) - vl)) begin
+      inXrange = 1;
+      xstart = $abstime;
+   end
+
+   always @(above(vl - V(a))) begin
+      vstate = 3;
+      inXrange = 0;
+      dout = 0;
+   end
+
+   always @(above(abs(I(a)) - maxzi)) begin
+      outOfZcurrent = 1;
+      zstart = $abstime;
+   end
+
+   always @(above(maxzi - abs(I(a)))) begin
+      istate = 0;
+      outOfZcurrent = 0;
+   end
+
+   analog begin
+
+      @(timer(10p, 10p)) begin
+
+         if (inXrange == 1) begin
+            if (($abstime - xstart) >= xdelay) begin
+               vstate = 2;
+               inXrange = 0;
+            end
+         end
+
+         if (outOfZcurrent == 1) begin
+            if (($abstime - zstart) >= zdelay) begin
+               istate = 1;
+               outOfZcurrent = 0;
+            end
+         end
+
+      end
+
+      V(a) <+ transition(v, 0, tr, tf)
+              + transition(r, 0, tr, tf) * I(a);
+
+      V(vstate_probe) <+ transition(vstate, 0, 10p, 10p);
+      V(istate_probe) <+ transition(istate, 0, 10p, 10p);
+
+   end
+
+endmodule

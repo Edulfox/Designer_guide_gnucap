@@ -1,0 +1,70 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the charge-pump model.
+//
+// The stimulus deliberately exercises all four input combinations:
+//
+// inc dec
+//  0   0  -> zero current
+//  1   0  -> positive current
+//  1   1  -> zero current
+//  0   1  -> negative current
+//
+// A 1 kOhm load converts the nominal +/-1 mA output current
+// into approximately +/-1 V, making the behavior easy to verify.
+
+load mgsim
+load vams/vpulse.so
+load ./cp.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// INC:
+// LOW  from   0 ns to  40 ns
+// HIGH from  40 ns to 120 ns
+// LOW  from 120 ns to 200 ns
+// Sequence repeats every 160 ns.
+vpulse #(.val0(0.0), .val1(1.0), .td(40n), .rise(10p), .fall(10p), .width(80n), .period(160n)) inc_source(inc_drive,gnd);
+
+// DEC:
+// LOW  from   0 ns to  80 ns
+// HIGH from  80 ns to 160 ns
+// LOW  from 160 ns onward.
+// Together with INC this generates all four logic combinations.
+vpulse #(.val0(0.0), .val1(1.0), .td(80n), .rise(10p), .fall(10p), .width(80n), .period(160n)) dec_source(dec_drive,gnd);
+
+// Convert electrical stimulus signals to logic.
+c_a_d #(.model("logic")) inc_converter(inc,inc_drive);
+c_a_d #(.model("logic")) dec_converter(dec,dec_drive);
+
+// Charge pump under test.
+cp #(.cur(1m)) dut(pout,gnd,inc,dec);
+
+// 1 kOhm load used to convert output current into voltage.
+resistor #(.r(1k)) load(pout,gnd);
+
+// Logic probes for visualization.
+c_d_a #(.model("logic")) inc_probe(inc_probe_v,inc);
+c_d_a #(.model("logic")) dec_probe(dec_probe_v,dec);
+
+// Record control states and analog charge-pump output.
+print tran v(inc_probe_v) v(dec_probe_v) v(pout) l(inc) l(dec) iter(0)
+tran 0 400n 20p > results/cp.txt

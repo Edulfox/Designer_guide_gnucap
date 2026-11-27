@@ -1,0 +1,39 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Pseudo-random bit-stream generator based on Chapter 5, Listing 2.
+// The book uses $random. Current Gnucap/modelgen provides $rdist_uniform
+// but not $random, so a uniform distribution is used to preserve the
+// one-random-decision-per-timer-event behavior.
+module bitStream (out);
+   parameter real start = 0.0;
+   parameter real period = 1.0;
+   parameter integer seed_init = 1;
+   output out;
+   electrical out;
+   integer x;
+   integer seed = seed_init;
+   real r;
+   analog begin
+      @(timer(start, period)) begin
+         r = $rdist_uniform(seed, -1.0, 1.0, "instance");
+         x = (r >= 0.0) ? 1 : 0;
+      end
+      V(out) <+ transition(x, 0.0, period/100.0);
+   end
+endmodule

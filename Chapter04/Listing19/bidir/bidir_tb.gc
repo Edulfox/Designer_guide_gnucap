@@ -1,0 +1,66 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Comprehensive functional verification for the Gnucap-compatible
+// implementation of Designer's Guide Listing 19.
+//
+// Test sections:
+//   1. Digital-to-analog conversion and output resistance.
+//   2. Fast analog transition through the X voltage region.
+//   3. Slow analog transition that remains in the X region longer than xdelay.
+//   4. Current qualification using maxzi and zdelay.
+
+load mgsim
+load vams/vpulse.so
+load ../../../common/clock/clock.so
+load ./bidir.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=5.0 vmin=0.0
+
+vsource #(.dc(5.0)) supply(vdd,gnd);
+vsource #(.dc(5.0)) enable_source(clock_enable,gnd);
+
+clock #(.frecuency(25M)) clock_source(d_d2a,clock_enable);
+
+bidir #(.v0(0.0), .v1(5.0), .r0(1k), .r1(1k), .tr(1n), .tf(1n), .vl(0.5), .vh(2.7), .xdelay(1n), .zdelay(0.5n)) dut_down(a_down,d_d2a,dout_down,vstate_down,istate_down);
+bidir #(.v0(0.0), .v1(5.0), .r0(1k), .r1(1k), .tr(1n), .tf(1n), .vl(0.5), .vh(2.7), .xdelay(1n), .zdelay(0.5n)) dut_up(a_up,d_d2a,dout_up,vstate_up,istate_up);
+
+resistor #(.r(1k)) load_down(a_down,gnd);
+resistor #(.r(1k)) load_up(vdd,a_up);
+
+c_d_a #(.model("logic")) d_d2a_probe(d_d2a_v,d_d2a);
+
+vsource #(.dc(0.0)) logic_zero_source(logic_zero,gnd);
+c_a_d #(.model("logic")) logic_zero_converter(d_static0,logic_zero);
+
+vpulse #(.val0(0.0), .val1(5.0), .td(5n), .rise(1n), .fall(1n), .width(8n), .period(20n)) fast_voltage_source(a_fast,gnd);
+bidir #(.vl(0.5), .vh(2.7), .xdelay(1n), .zdelay(0.5n)) dut_fast(a_fast,d_static0,dout_fast,vstate_fast,istate_fast);
+c_d_a #(.model("logic")) dout_fast_probe(dout_fast_v,dout_fast);
+
+vpulse #(.val0(0.0), .val1(5.0), .td(5n), .rise(20n), .fall(20n), .width(10n), .period(70n)) slow_voltage_source(a_slow,gnd);
+bidir #(.vl(0.5), .vh(2.7), .xdelay(1n), .zdelay(0.5n)) dut_slow(a_slow,d_static0,dout_slow,vstate_slow,istate_slow);
+c_d_a #(.model("logic")) dout_slow_probe(dout_slow_v,dout_slow);
+
+vpulse #(.val0(0.0), .val1(0.2), .td(10n), .rise(10p), .fall(10p), .width(4n), .period(12n)) current_test_source(a_current,gnd);
+bidir #(.v0(0.0), .r0(1k), .vl(0.5), .vh(2.7), .maxzi(0.1u), .xdelay(1n), .zdelay(0.5n)) dut_current(a_current,d_static0,dout_current,vstate_current,istate_current);
+
+print tran v(d_d2a_v) v(a_down) v(a_up) v(a_fast) v(dout_fast_v) v(vstate_fast) v(a_slow) v(dout_slow_v) v(vstate_slow) v(a_current) v(istate_current)
+tran 0 100n 10p > results/bidir.txt
+status notime

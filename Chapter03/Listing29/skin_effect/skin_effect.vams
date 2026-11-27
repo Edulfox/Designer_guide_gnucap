@@ -1,0 +1,76 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+`include "constants.vams"
+
+// Skin-effect model using numerically robust cascaded first-order sections.
+module skin_effect (p, n);
+   parameter integer lumps = 10;
+   parameter real f0 = 1.0;
+   parameter real f1 = 10.0;
+   parameter real r0 = 1.0;
+   parameter real mult = pow(f1/f0, 1.0/40.0);
+   parameter real scale = pow(f1/f0, 0.5);
+
+   inout p, n;
+   electrical p, n;
+   electrical x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+
+   analog begin
+      V(x1,n) <+ laplace_nd(V(p,n),
+         '{2.0*`M_PI*f0*pow(mult,3), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,1), 1.0});
+
+      V(x2,n) <+ laplace_nd(V(x1,n),
+         '{2.0*`M_PI*f0*pow(mult,7), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,5), 1.0});
+
+      V(x3,n) <+ laplace_nd(V(x2,n),
+         '{2.0*`M_PI*f0*pow(mult,11), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,9), 1.0});
+
+      V(x4,n) <+ laplace_nd(V(x3,n),
+         '{2.0*`M_PI*f0*pow(mult,15), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,13), 1.0});
+
+      V(x5,n) <+ laplace_nd(V(x4,n),
+         '{2.0*`M_PI*f0*pow(mult,19), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,17), 1.0});
+
+      V(x6,n) <+ laplace_nd(V(x5,n),
+         '{2.0*`M_PI*f0*pow(mult,23), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,21), 1.0});
+
+      V(x7,n) <+ laplace_nd(V(x6,n),
+         '{2.0*`M_PI*f0*pow(mult,27), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,25), 1.0});
+
+      V(x8,n) <+ laplace_nd(V(x7,n),
+         '{2.0*`M_PI*f0*pow(mult,31), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,29), 1.0});
+
+      V(x9,n) <+ laplace_nd(V(x8,n),
+         '{2.0*`M_PI*f0*pow(mult,35), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,33), 1.0});
+
+      V(x10,n) <+ laplace_nd(V(x9,n),
+         '{2.0*`M_PI*f0*pow(mult,39), 1.0},
+         '{2.0*`M_PI*f0*pow(mult,37), 1.0});
+
+      I(p,n) <+ V(x10,n)/(r0*scale);
+   end
+endmodule

@@ -1,0 +1,28 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// DC-current stress through the implicit series resistance formulation.
+load mgsim
+load ./diode.so
+load vams/vsine.so
+verilog
+ground gnd;
+vsine #(.offset(0.4), .ampl(0.4), .freq(1M)) source(vin,gnd);
+resistor #(.r(1k)) series(vin,a);
+diode #(.is(10f), .r(10)) dut(a,gnd);
+print tran v(vin) v(a)
+tran 0 2u 1n > results/diode.txt
+status notime

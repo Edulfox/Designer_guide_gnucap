@@ -1,0 +1,66 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+nature Voltage
+   units = "V";
+   access = V;
+   abstol = 1e-6;
+endnature
+
+nature Current
+   units = "A";
+   access = I;
+   abstol = 1e-12;
+endnature
+
+nature Angular_Velocity
+   units = "rads/s";
+   access = Omega;
+   abstol = 1e-6;
+endnature
+
+nature Angular_Force
+   units = "N-m";
+   access = Tau;
+   abstol = 1e-6;
+endnature
+
+discipline electrical
+   potential Voltage;
+   flow Current;
+enddiscipline
+
+discipline rotational_omega
+   potential Angular_Velocity;
+   flow Angular_Force;
+enddiscipline
+
+nature Position
+   units = "m";
+   access = Pos;
+   abstol = 1e-6;
+endnature
+
+nature Force
+   units = "N";
+   access = F;
+   abstol = 1e-6;
+endnature
+
+discipline kinematic
+   potential Position;
+   flow Force;
+enddiscipline

@@ -1,0 +1,37 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Multidisciplinary motor with a Gnucap-compatible RL winding formulation.
+module motor (shaft, p, n);
+   parameter real km = 4.5;
+   parameter real kf = 6.2;
+   parameter real j = 0.004;
+   parameter real d = 0.1;
+   parameter real r = 5.0;
+   parameter real l = 0.02;
+   inout shaft, p, n;
+   rotational_omega shaft;
+   electrical p, n;
+   real imotor;
+
+   analog begin
+      imotor = laplace_nd(V(p,n) - km*Omega(shaft), '{1.0}, '{r,l});
+      I(p,n) <+ imotor;
+      Tau(shaft) <+ kf*imotor - d*Omega(shaft) - j*ddt(Omega(shaft));
+   end
+endmodule

@@ -1,0 +1,33 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Explicit-branch series RLC with a Gnucap-compatible RL formulation.
+module series_rlc (p, n);
+   parameter real r = 0.0;
+   parameter real l = 0.0;
+   parameter real c = 0.0;
+   inout p, n;
+   electrical p, n, i;
+   branch (p,i) rl;
+   branch (i,n) cap;
+
+   analog begin
+      I(rl) <+ laplace_nd(V(rl), '{1.0}, '{r,l});
+      I(cap) <+ c*ddt(V(cap));
+   end
+endmodule

@@ -1,0 +1,84 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the digitally controlled non-ideal switch.
+//
+// Designer's Guide Listing 11.
+//
+// The switch has:
+//   ron  = 10 ohm
+//   roff = 100 Mohm
+//   tr   = 20 ns
+//   tf   = 20 ns
+//
+// A 1 Mohm load is connected from the output node to ground.
+//
+// Expected steady-state voltage ratios:
+//
+//   ON:
+//      V(n)/V(p) = 1M/(1M + 10)
+//                = 0.999990
+//
+//   OFF:
+//      V(n)/V(p) = 1M/(1M + 100M)
+//                = 0.00990099
+//
+// A bipolar sine wave verifies conduction for positive and
+// negative voltages.
+//
+// Control timing:
+//
+//   0   - 50 ns  : OFF
+//   50  - 150 ns : ON
+//   150 - 250 ns : OFF
+//   250 - 350 ns : ON
+//   350 - 400 ns : OFF
+//
+// The switching transitions also verify the 20 ns resistance
+// transition implemented by the original model.
+
+load mgsim
+load vams/vpulse.so
+load vams/vsine.so
+load ./sw.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// Bipolar analog input: -1 V to +1 V, period = 200 ns.
+vsine #(.ampl(1.0), .offset(0.0), .freq(5M)) analog_source(p,gnd);
+
+// Switch control: 100 ns ON, 100 ns OFF.
+vpulse #(.val0(0.0), .val1(1.0), .td(50n), .rise(10p), .fall(10p), .width(100n), .period(200n)) control_source(control_drive,gnd);
+
+// Convert electrical control stimulus to logic.
+c_a_d #(.model("logic")) control_converter(s,control_drive);
+
+// Non-ideal digitally controlled switch.
+switch dut(p,n,s);
+
+// 1 Mohm load used to expose both ron and roff behavior.
+resistor #(.r(1M)) load_resistor(n,gnd);
+
+// Convert the logic control back to an electrical probe.
+c_d_a #(.model("logic")) control_probe(control_probe_v,s);
+
+// Simulation results.
+print tran v(p) v(n) v(control_probe_v) l(s) iter(0)
+tran 0 400n 10p > results/sw.txt

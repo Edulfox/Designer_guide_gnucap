@@ -1,0 +1,23 @@
+# Gnucap compiled models
+*.so
+*.o
+*.cc
+
+# Generated simulation results and plots
+**/results/
+**/plots/
+
+# Central build, test, and plot logs
+/logs/
+
+# Simulator / crash outputs
+*.raw
+core
+core.*
+core-*
+
+# Temporary editor and operating-system files
+*~
+*.swp
+*.swo
+.DS_Store

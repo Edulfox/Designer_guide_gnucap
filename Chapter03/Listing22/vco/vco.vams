@@ -1,0 +1,42 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+`include "constants.vams"
+
+// Sinusoidal voltage-controlled oscillator based on Chapter 3, Listing 22.
+// Gnucap/modelgen does not implement idtmod(), so idt() is used. Since the
+// integrated phase is immediately passed through sin(), the observable periodic
+// waveform and voltage-to-frequency law are preserved.
+module vco (out, in);
+   parameter real Vmin = 0.0;
+   parameter real Vmax = 1.0;
+   parameter real Fmin = 1.0;
+   parameter real Fmax = 2.0*Fmin;
+   parameter real ampl = 1.0;
+   input in;
+   output out;
+   electrical out, in;
+   real freq, phase;
+   analog begin
+      freq = (V(in) - Vmin)*(Fmax - Fmin)/(Vmax - Vmin) + Fmin;
+      if (freq > Fmax) freq = Fmax;
+      if (freq < Fmin) freq = Fmin;
+      phase = 2.0*`M_PI*idt(freq, 0.0);
+      V(out) <+ ampl*sin(phase);
+      $bound_step(0.1/freq);
+   end
+endmodule

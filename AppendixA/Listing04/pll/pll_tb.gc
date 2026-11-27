@@ -1,0 +1,47 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Integration test for The Designer's Guide, Appendix A, Listing 4.
+
+load mgsim
+load vams/vpulse.so
+load ../../Listing05/pfd/pfd.so
+load ../../Listing06/cp/cp.so
+load ../../Listing07/fd/fd.so
+load ../../Listing08/vco/vco.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+vpulse #(.val0(1.0),.val1(0.0),.td(1n),.rise(10p),.fall(10p),.width(500n),.period(1u)) reset_source(reset_drive,gnd);
+vpulse #(.val0(0.0),.val1(1.0),.td(33.33n),.rise(10p),.fall(10p),.width(33.33n),.period(66.66n)) ref_source(ref_drive,gnd);
+
+c_a_d #(.model("logic")) reset_converter(reset,reset_drive);
+c_a_d #(.model("logic")) ref_converter(ref,ref_drive);
+
+pfd PFD(.reset(reset),.qinc(up),.active(fb),.ref(ref),.qdec(dwn));
+cp #(.cur(1m)) CP(.nout(gnd),.dec(dwn),.inc(up),.pout(err));
+capacitor #(.c(30n)) C(err,err2);
+resistor #(.r(200)) R(err2,gnd);
+resistor #(.r(100k)) RVCO(err,gnd);
+vco #(.f0(1.5E9),.kvco(50.0E6),.tick(1p)) VCO(.ps(err),.ns(gnd),.out(out));
+fd FD(.reset(reset),.out(fb),.clk(out));
+
+print tran l(ref) l(fb) l(up) l(dwn) v(err) l(out) iter(0)
+tran 0 500n 20p > results/pll.txt

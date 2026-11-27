@@ -1,0 +1,28 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// A sinusoidal source crosses the breakdown threshold repeatedly.
+// The sentinel must set given=1 on the first upward crossing and keep it set.
+load mgsim
+load ./breakdown.so
+load vams/vsine.so
+verilog
+ground gnd;
+vsine #(.offset(4.0), .ampl(2.0), .freq(20M)) source(n,gnd);
+breakdown #(.threshold(5.0)) dut(n);
+print tran v(n) given(dut)
+tran 0 100n 20p > results/breakdown.txt
+status notime

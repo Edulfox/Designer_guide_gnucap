@@ -1,0 +1,29 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Transient step response of the complete lossy-inductor network.
+load mgsim
+load vams/vpulse.so
+load ../../Listing29/skin_effect/skin_effect.so
+load ./lossy_ind.so
+verilog
+ground gnd;
+vpulse #(.val0(0.0), .val1(1.0), .td(100n), .rise(5n), .fall(5n), .width(400n), .period(1u)) source(vin,gnd);
+resistor #(.r(50.0)) series(vin,vout);
+lossy_ind dut(vout,gnd);
+print tran v(vin) v(vout)
+tran 0 3u 1n > results/lossy_ind.txt
+status notime

@@ -1,0 +1,64 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Eight-bit scalar form of the N-bit ADC from Chapter 3, Listing 26.
+// Gnucap/modelgen does not provide general signal arrays, therefore the book's
+// output bus and result array are expanded explicitly while preserving the
+// successive midpoint algorithm and sample-on-clock behavior.
+module adc (out0, out1, out2, out3, out4, out5, out6, out7, in, clk);
+   parameter real fullscale = 1.0;
+   parameter real td = 0.0;
+   parameter real tt = 0.0;
+   parameter real vdd = 5.0;
+   parameter real thresh = vdd/2.0;
+   parameter integer dir = 1;
+   input in, clk;
+   output out0, out1, out2, out3, out4, out5, out6, out7;
+   electrical in, clk, out0, out1, out2, out3, out4, out5, out6, out7;
+   real sample, midpoint;
+   real result0, result1, result2, result3, result4, result5, result6, result7;
+   analog begin
+      @(cross(V(clk) - thresh, dir) or initial_step) begin
+         sample = V(in);
+         midpoint = fullscale/2.0;
+         if (sample > midpoint) begin result7 = vdd; sample = sample - midpoint; end else result7 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result6 = vdd; sample = sample - midpoint; end else result6 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result5 = vdd; sample = sample - midpoint; end else result5 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result4 = vdd; sample = sample - midpoint; end else result4 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result3 = vdd; sample = sample - midpoint; end else result3 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result2 = vdd; sample = sample - midpoint; end else result2 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result1 = vdd; sample = sample - midpoint; end else result1 = 0.0;
+         sample = 2.0*sample;
+         if (sample > midpoint) begin result0 = vdd; sample = sample - midpoint; end else result0 = 0.0;
+      end
+      V(out0) <+ transition(result0, td, tt);
+      V(out1) <+ transition(result1, td, tt);
+      V(out2) <+ transition(result2, td, tt);
+      V(out3) <+ transition(result3, td, tt);
+      V(out4) <+ transition(result4, td, tt);
+      V(out5) <+ transition(result5, td, tt);
+      V(out6) <+ transition(result6, td, tt);
+      V(out7) <+ transition(result7, td, tt);
+   end
+endmodule

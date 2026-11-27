@@ -1,0 +1,83 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+`include "disciplines.vams"
+
+// Eight-bit scalar form of the mixed-signal ADC from Designer's Guide,
+// Chapter 4, Listing 12.
+// The book's output vector is expanded into scalar logic outputs.
+// Gnucap compatibility: delayed non-blocking vector assignments are expanded
+// into scalar blocking assignments. The internal one-bit temporary 'over' is
+// represented by an integer because internal reg nets are not accepted by the
+// supplied modelgen flow. Output storage follows the tested output/reg/logic form.
+module adc (b7, b6, b5, b4, b3, b2, b1, b0, in, clk);
+   parameter real fullscale = 1.0;
+   parameter real td = 0;
+
+   input in, clk;
+   output b7, b6, b5, b4, b3, b2, b1, b0;
+
+   electrical in;
+   reg b7, b6, b5, b4, b3, b2, b1, b0;
+   logic clk;
+   logic b7, b6, b5, b4, b3, b2, b1, b0;
+   integer over;
+   real sample, midpoint;
+
+   always @(posedge(clk)) begin
+       sample = V(in);
+       midpoint = fullscale/2.0;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b7 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b6 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b5 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b4 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b3 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b2 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b1 = over;
+
+       over = (sample > midpoint);
+       if (over) sample = sample - midpoint;
+       sample = 2.0*sample;
+       b0 = over;
+   end
+endmodule

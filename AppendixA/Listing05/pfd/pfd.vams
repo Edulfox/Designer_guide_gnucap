@@ -1,0 +1,71 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+module pfd(qinc,qdec,active,ref,reset);
+
+output qinc,qdec;
+input reset,active,ref;
+
+reg qinc,qdec;
+logic qinc,qdec,reset,active,ref;
+
+integer q0=0;
+integer q1=0;
+integer active_old=0;
+integer ref_old=0;
+
+always @(edge(active) or edge(ref)) begin
+
+if(reset) begin
+q0=0;
+q1=0;
+end else begin
+
+if(active&&!active_old) begin
+q0=1;
+end
+
+if(ref&&!ref_old) begin
+q1=1;
+end
+
+if(q0&&q1) begin
+q0=0;
+q1=0;
+end
+
+end
+
+qdec=q0;
+qinc=q1;
+
+active_old=active;
+ref_old=ref;
+
+end
+
+always @(posedge(reset)) begin
+q0=0;
+q1=0;
+qdec=0;
+qinc=0;
+active_old=active;
+ref_old=ref;
+end
+
+endmodule

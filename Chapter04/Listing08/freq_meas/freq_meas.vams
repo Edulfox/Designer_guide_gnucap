@@ -1,0 +1,58 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Digital frequency measurement based on
+// The Designer's Guide to Verilog-AMS,
+// Chapter 4, Listing 8.
+//
+// The model measures the period between two consecutive
+// rising edges of the digital input clock and computes
+// the corresponding frequency.
+//
+// The original listing uses:
+//   `timescale 1ns / 1ps
+//   $realtime
+//
+// Gnucap does not require the original `timescale here.
+// $abstime is used instead and returns time in seconds,
+// therefore the frequency is calculated directly as 1/dt.
+//
+// The original initial block is preserved now that
+// Gnucap modelgen supports digital initial blocks.
+
+module freq_meas (clk);
+   input clk;
+   logic clk;
+   real last_time;
+   real current_time;
+   (*desc="freq"*) real freq;
+
+
+   initial begin
+      last_time = 0.0;
+      freq = 0.0;
+   end
+
+   always @(posedge(clk)) begin
+      current_time = $abstime;
+      if (last_time > 0.0)
+         freq = 1.0 / (current_time - last_time);
+      last_time = current_time;
+   end
+
+endmodule

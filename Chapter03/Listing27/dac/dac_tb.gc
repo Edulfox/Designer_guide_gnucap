@@ -1,0 +1,36 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Eight independent analog bit sources form a complete repeating 8-bit binary count.
+load mgsim
+load ./dac.so
+load vams/vpulse.so
+load vams/vsine.so
+verilog
+ground gnd;
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(5n), .period(10n)) b0_source(b0,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(10n), .period(20n)) b1_source(b1,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(20n), .period(40n)) b2_source(b2,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(40n), .period(80n)) b3_source(b3,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(80n), .period(160n)) b4_source(b4,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(160n), .period(320n)) b5_source(b5,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(320n), .period(640n)) b6_source(b6,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(0), .rise(10p), .fall(10p), .width(640n), .period(1280n)) b7_source(b7,gnd);
+vsine #(.offset(0.5), .ampl(0.5), .freq(200M), .phase(3.141592653589793)) clock_source(clk,gnd);
+dac #(.fullscale(1.0), .vdd(1.0), .thresh(0.5), .dir(1), .td(100p), .tt(100p)) dut(out,b0,b1,b2,b3,b4,b5,b6,b7,clk);
+print tran v(clk) v(b7) v(b6) v(b5) v(b4) v(b3) v(b2) v(b1) v(b0) v(out)
+tran 0 1280n 100p > results/dac.txt
+status notime

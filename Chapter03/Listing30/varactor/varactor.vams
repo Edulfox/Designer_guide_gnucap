@@ -1,0 +1,33 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Varactor from Chapter 3, Listing 30.
+module varactor (p, n);
+   parameter real c0 = 1p from (0:inf);
+   parameter real c1 = 0.5p from [0:c0);
+   parameter real v0 = 0.0;
+   parameter real v1 = 1.0 from (0:inf);
+   inout p, n;
+   electrical p, n;
+   real q, v;
+   analog begin
+      v = V(p,n);
+      q = c0*v + c1*v1*ln(cosh((v-v0)/v1));
+      I(p,n) <+ ddt(q);
+   end
+endmodule

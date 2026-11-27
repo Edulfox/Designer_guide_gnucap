@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Control ramps from 0 to 1 V, increasing oscillation frequency from Fmin to Fmax.
+load mgsim
+load ./vco.so
+load vams/vpulse.so
+verilog
+ground gnd;
+vpulse #(.val0(0.0), .val1(1.0), .td(10n), .rise(150n), .fall(150n), .width(20n), .period(340n)) control(in,gnd);
+vco #(.Vmin(0.0), .Vmax(1.0), .Fmin(10M), .Fmax(50M), .ampl(1.0)) dut(out,in);
+print tran v(in) v(out)
+tran 0 340n 20p > results/vco.txt
+status notime

@@ -1,0 +1,29 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Validate DC, AC, and thermal-noise behavior of the resistive port.
+load mgsim
+load ./port.so
+verilog
+ground gnd;
+port #(.r(50.0), .dc(0.5), .mag(1.0)) dut(out,gnd);
+resistor #(.r(50.0)) load(out,gnd);
+noise_probe #(.name("thermal")) nthermal(out);
+print tran v(out)
+tran 0 10n 10p > results/port_tran.txt
+print ac v(out) nv(nthermal) npwr(nthermal)
+ac 1 1G * 10 > results/port_ac_noise.txt
+status notime

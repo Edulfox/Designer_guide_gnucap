@@ -1,0 +1,28 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Bipolar ramp through a source resistor demonstrates one-way conduction.
+load mgsim
+load ./diode.so
+load vams/vpulse.so
+verilog
+ground gnd;
+vpulse #(.val0(-1.0), .val1(1.0), .td(2n), .rise(20n), .fall(20n), .width(10n), .period(60n)) source(vin,gnd);
+resistor #(.r(1k)) series(vin,out);
+diode dut(out,gnd);
+print tran v(vin) v(out)
+tran 0 70n 20p > results/diode.txt
+status notime

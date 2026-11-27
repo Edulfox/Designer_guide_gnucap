@@ -1,0 +1,70 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the mixed-signal comparator.
+//
+// Designer's Guide Listing 14.
+//
+// Comparator parameters:
+//
+//   offset = 50 mV
+//   hyst   = 100 mV
+//
+// Therefore:
+//
+//   lower threshold = offset - hyst/2 = 0.00 V
+//   upper threshold = offset + hyst/2 = 0.10 V
+//
+// Expected behavior:
+//
+//   Rising input:
+//      OUT changes LOW -> HIGH when V(p,n) crosses +0.10 V.
+//
+//   Falling input:
+//      OUT changes HIGH -> LOW when V(p,n) crosses 0.00 V.
+//
+// The input sine wave spans from -0.40 V to +0.20 V,
+// therefore both thresholds are crossed repeatedly.
+//
+// Input:
+//
+//   offset    = -0.10 V
+//   amplitude =  0.30 V
+//   frequency =  5 MHz
+//
+// Period = 200 ns.
+//
+// The simulation covers two complete input periods.
+
+load mgsim
+load vams/vsine.so
+load ./comparator.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+vsine #(.ampl(0.30), .offset(-0.10), .freq(5M)) input_source(p,gnd);
+
+comparator #(.offset(0.05), .hyst(0.10)) dut(out,p,gnd);
+
+c_d_a #(.model("logic")) output_probe(out_probe_v,out);
+
+print tran v(p) v(out_probe_v) iter(0)
+tran 0 400n 10p > results/comparator.txt
+status notime

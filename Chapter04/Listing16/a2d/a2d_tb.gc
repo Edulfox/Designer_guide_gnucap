@@ -1,0 +1,66 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Complete functional verification of the basic electrical-to-logic A2D.
+//
+// Designer's Guide Listing 16.
+//
+// Original model parameters:
+//
+//   vl = 0.5 V
+//   vh = 2.7 V
+//   c  = 100 fF
+//
+// Expected digital behavior:
+//
+//   V(in) > 2.7 V while rising  -> OUT = 1
+//   V(in) < 0.5 V while falling -> OUT = 0
+//
+// Between 0.5 V and 2.7 V the previous logic state is retained.
+//
+// A 100 kohm source resistance is intentionally included.
+// Together with the model input capacitance:
+//
+//   tau = R * C = 100 kohm * 100 fF = 10 ns
+//
+// This allows the test to verify both the threshold behavior
+// and the input capacitance implemented by the original model.
+
+load mgsim
+load vams/vpulse.so
+load ./a2d.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// Slow analog stimulus from 0 V to 3.2 V and back to 0 V.
+vpulse #(.val0(0.0), .val1(3.2), .td(20n), .rise(100n), .fall(100n), .width(60n), .period(300n)) analog_source(input_drive,gnd);
+
+// Source resistance used to expose the 100 fF input capacitance.
+resistor #(.r(100k)) input_resistor(input_drive,in);
+
+// Electrical-to-logic converter under test.
+a2d #(.vh(2.7), .vl(0.5), .c(100f)) dut(out,in);
+
+// Convert the logic output to an electrical signal for observation.
+c_d_a #(.model("logic")) output_probe(out_probe_v,out);
+
+print tran v(input_drive) v(in) v(out_probe_v)
+tran 0 620n 10p > results/a2d.txt
+status notime

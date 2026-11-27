@@ -1,0 +1,69 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Complete functional verification of the voltage-controlled oscillator.
+//
+// The control voltage follows:
+//
+//   0 - 40 ns    : 0.0 V
+//  40 - 80 ns    : 0.5 V
+//  80 - 120 ns   : 1.0 V
+// 120 - 160 ns   : 0.5 V
+// 160 - 220 ns   : 0.0 V
+//
+// VCO parameters:
+//
+//   f0   = 100 MHz
+//   kvco = 100 MHz/V
+//
+// Expected frequencies:
+//
+//   Vctrl = 0.0 V -> 100 MHz -> T = 10.000 ns
+//   Vctrl = 0.5 V -> 150 MHz -> T =  6.667 ns
+//   Vctrl = 1.0 V -> 200 MHz -> T =  5.000 ns
+//   Vctrl = 0.5 V -> 150 MHz -> T =  6.667 ns
+//   Vctrl = 0.0 V -> 100 MHz -> T = 10.000 ns
+//
+// Two series VPULSE sources generate the three voltage levels
+// without requiring local variables or auxiliary modules.
+
+load mgsim
+load vams/vpulse.so
+load ./vco.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// Base control level: adds 0.5 V from 40 ns to 160 ns.
+vpulse #(.val0(0.0), .val1(0.5), .td(40n), .rise(10p), .fall(10p), .width(120n), .period(500n)) control_base(p_base,gnd);
+
+// Additional 0.5 V from 80 ns to 120 ns.
+// In series with control_base this produces 1.0 V at ps.
+vpulse #(.val0(0.0), .val1(0.5), .td(80n), .rise(10p), .fall(10p), .width(40n), .period(500n)) control_extra(ps,p_base);
+
+// Voltage-controlled oscillator under test.
+vco #(.f0(100M), .kvco(100M)) dut(out,ps,gnd);
+
+// Convert the digital oscillator output to an electrical probe.
+c_d_a #(.model("logic")) output_probe(out_probe_v,out);
+
+// Record the actual VCO control voltage and oscillator output.
+print tran v(ps) v(out_probe_v) iter(0)
+tran 0 220n 10p > results/vco.txt
+status notime

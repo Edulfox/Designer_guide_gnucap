@@ -1,0 +1,77 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Digital-to-analog interface based on Designer's Guide Listing 18.
+//
+// The digital input selects the Thevenin output voltage and resistance.
+// Logic 0 and logic 1 are currently supported.
+// The X and Z parameters are retained from the original model, although
+// dynamic X and Z states are not currently supported by Gnucap modelgen.
+
+module d2a(out, in);
+
+   parameter real v0 = 0.0;
+   parameter real v1 = 5.0;
+   parameter real vx = 2.5;
+   parameter real vz = 5.0;
+
+   parameter real r0 = 1k from (0:inf);
+   parameter real r1 = 1k from (0:inf);
+   parameter real rx = 100 from (0:inf);
+   parameter real rz = 1M from (0:inf);
+   
+   parameter real tr = 1n from [0:inf);
+   parameter real tf = 1n from [0:inf);
+
+   input in;
+   output out;
+
+   logic in;
+   electrical out;
+
+   real v;
+   real r;
+
+   initial begin
+      if (in) begin
+         v = v1;
+         r = r1;
+      end
+      else begin
+         v = v0;
+         r = r0;
+      end
+   end
+
+   always @(edge(in)) begin
+      if (in) begin
+         v = v1;
+         r = r1;
+      end
+      else begin
+         v = v0;
+         r = r0;
+      end
+   end
+
+   analog begin
+      V(out) <+ transition(v, 0, tr, tf)
+              + transition(r, 0, tr, tf) * I(out);
+   end
+
+endmodule

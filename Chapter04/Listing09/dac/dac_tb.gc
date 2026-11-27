@@ -1,0 +1,81 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional and full-scale verification of the 8-bit DAC.
+//
+// The eight input bits generate the complete binary sequence
+// from 0x00 to 0xFF.
+// One new code is sampled at every rising edge of the 100 MHz clock.
+//
+// Expected transfer:
+//
+// Vout = code / 256 V
+//
+// Important reference values:
+// 0x00 =   0 -> 0.000000 V
+// 0x40 =  64 -> 0.250000 V
+// 0x80 = 128 -> 0.500000 V
+// 0xC0 = 192 -> 0.750000 V
+// 0xFF = 255 -> 0.996094 V
+
+load mgsim
+load vams/vpulse.so
+load ./dac.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// 100 MHz sampling clock.
+// Rising edges occur at 5 ns, 15 ns, 25 ns, ...
+vpulse #(.val0(0.0), .val1(1.0), .td(5n), .rise(10p), .fall(10p), .width(5n), .period(10n)) clk_source(clk_drive,gnd);
+
+// Binary input sequence.
+// Bit transitions occur 2 ns after a DAC sampling edge so that
+// every input code is stable before the following rising clock edge.
+vpulse #(.val0(0.0), .val1(1.0), .td(7n), .rise(10p), .fall(10p), .width(10n), .period(20n)) b0_source(b0_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(17n), .rise(10p), .fall(10p), .width(20n), .period(40n)) b1_source(b1_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(37n), .rise(10p), .fall(10p), .width(40n), .period(80n)) b2_source(b2_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(77n), .rise(10p), .fall(10p), .width(80n), .period(160n)) b3_source(b3_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(157n), .rise(10p), .fall(10p), .width(160n), .period(320n)) b4_source(b4_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(317n), .rise(10p), .fall(10p), .width(320n), .period(640n)) b5_source(b5_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(637n), .rise(10p), .fall(10p), .width(640n), .period(1280n)) b6_source(b6_drive,gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(1277n), .rise(10p), .fall(10p), .width(1280n), .period(2560n)) b7_source(b7_drive,gnd);
+
+// Convert all electrical stimuli to logic.
+c_a_d #(.model("logic")) clk_converter(clk,clk_drive);
+c_a_d #(.model("logic")) b0_converter(b0,b0_drive);
+c_a_d #(.model("logic")) b1_converter(b1,b1_drive);
+c_a_d #(.model("logic")) b2_converter(b2,b2_drive);
+c_a_d #(.model("logic")) b3_converter(b3,b3_drive);
+c_a_d #(.model("logic")) b4_converter(b4,b4_drive);
+c_a_d #(.model("logic")) b5_converter(b5,b5_drive);
+c_a_d #(.model("logic")) b6_converter(b6,b6_drive);
+c_a_d #(.model("logic")) b7_converter(b7,b7_drive);
+
+// Device under test.
+// Scalar inputs replace the original 8-bit packed input bus.
+dac dut(out,b7,b6,b5,b4,b3,b2,b1,b0,clk);
+
+// Logic clock probe for waveform verification.
+c_d_a #(.model("logic")) clk_probe(clk_probe_v,clk);
+
+// Record the analog DAC output and all input bits.
+print tran v(out) v(clk_probe_v) l(b7) l(b6) l(b5) l(b4) l(b3) l(b2) l(b1) l(b0) iter(0)
+tran 0 2567n 100p > results/dac.txt
+status notime

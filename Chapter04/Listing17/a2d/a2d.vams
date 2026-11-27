@@ -1,0 +1,80 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// Diagnostic implementation of Designer's Guide Listing 17.
+//
+// This version verifies whether Gnucap/modelgen can propagate an
+// internally existing unknown logic state through a continuous
+// logic assignment.
+//
+// The dt qualification is intentionally omitted in this test.
+// Slow and fast crossings will therefore enter X immediately.
+//
+// If this test works, the timed X-region behavior can subsequently
+// be implemented using timer() and $abstime.
+
+module a2d (out, in);
+
+   parameter real vh = 2.7;
+   parameter real vl = 0.5;
+   parameter real c = 100f;
+   parameter real dt = 1n;
+   parameter real dv = 0.2;
+
+   parameter real vlx = vl + dv;
+   parameter real vhx = vh - dv;
+
+   input in;
+   output out;
+
+   electrical in;
+
+   logic out;
+   logic high_state;
+   logic inXregion;
+   logic x_source;
+
+   initial inXregion = 0;
+
+   assign out = high_state | (inXregion & x_source);
+
+   always @(above(V(in) - vh)) begin
+      high_state = 1;
+      inXregion = 0;
+   end
+
+   always @(above(vl - V(in))) begin
+      high_state = 0;
+      inXregion = 0;
+   end
+
+   always @(above(vhx - V(in))) begin
+      high_state = 0;
+      inXregion = 1;
+   end
+
+   always @(above(V(in) - vlx)) begin
+      high_state = 0;
+      inXregion = 1;
+   end
+
+   analog begin
+      I(in) <+ c * ddt(V(in));
+   end
+
+endmodule

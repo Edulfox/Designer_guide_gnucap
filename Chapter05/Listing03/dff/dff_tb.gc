@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+load mgsim
+verilog
+load ./dff.so
+load vams/vpulse.so
+ground gnd;
+
+dff #(.dir(1)) dut(q, d, clk);
+vpulse #(.val0(0.0), .val1(1.0), .td(5n), .rise(20p), .fall(20p), .width(20n), .period(40n)) d_source(d, gnd);
+vpulse #(.val0(0.0), .val1(1.0), .td(10n), .rise(20p), .fall(20p), .width(5n), .period(20n)) clk_source(clk, gnd);
+print tran v(clk) v(d) v(q) iter(0)
+tran 0 160n 0 20p > results/dff.txt
+status notime

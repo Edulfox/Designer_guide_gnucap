@@ -1,0 +1,35 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+// Capability test for Listing 20. This testbench is intentionally kept with the
+// standards-faithful source even though the current modelgen snapshot cannot build it.
+// Once driver-access support is added, two digital drivers should exercise agreement
+// and contention while the analog terminal exposes the resulting Thevenin equivalent.
+load mgsim
+load ./bidir.so
+load ../../../extensions/clock/clock.so
+verilog
+ground gnd;
+.model logic logic delay=1p rise=10p fall=10p vmax=5.0 vmin=0.0
+vsource #(.dc(5.0)) enable_source(en,gnd);
+clock #(.frecuency(25M)) driver0(d,en);
+clock #(.frecuency(12.5M)) driver1(d,en);
+bidir dut(a,d);
+resistor #(.r(1k)) load(a,gnd);
+c_d_a #(.model("logic")) probe(d_probe,d);
+print tran v(d_probe) v(a)
+tran 0 160n 10p > results/bidir.txt
+status notime

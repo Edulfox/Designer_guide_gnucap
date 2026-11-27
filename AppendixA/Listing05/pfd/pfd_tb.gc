@@ -1,0 +1,99 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Complete functional verification of the phase-frequency detector.
+//
+// A single PFD instance is used.
+//
+// ACTIVE:
+//   period = 20 ns
+//   rising edges = 10, 30, 50, 70, 90, 110, 130 ns...
+//
+// REF:
+//   period = 18 ns
+//   rising edges = 13, 31, 49, 67, 85, 103, 121 ns...
+//
+// This produces both operating conditions in the same PFD:
+//
+// 10 ns ACTIVE -> 13 ns REF:
+//   ACTIVE leads by 3 ns -> QDEC pulse.
+//
+// 30 ns ACTIVE -> 31 ns REF:
+//   ACTIVE leads by 1 ns -> QDEC pulse.
+//
+// 49 ns REF -> 50 ns ACTIVE:
+//   REF leads by 1 ns -> QINC pulse.
+//
+// 67 ns REF -> 70 ns ACTIVE:
+//   REF leads by 3 ns -> QINC pulse.
+//
+// Reset is asserted while QINC is active:
+//   RESET rises at 68.5 ns.
+//   QINC must immediately return to zero.
+//   ACTIVE at 70 ns occurs while reset is asserted and must be ignored.
+//
+// Reset is released at 74.5 ns, away from all input edges.
+//
+// After reset:
+//   85 ns REF -> 90 ns ACTIVE:
+//   QINC must operate normally again.
+//
+// This verifies:
+//   - QDEC operation.
+//   - QINC operation.
+//   - phase-error dependent pulse width.
+//   - transition from QDEC operation to QINC operation.
+//   - reset while an output is active.
+//   - correct recovery after reset.
+
+load mgsim
+load vams/vpulse.so
+load ./pfd.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// ACTIVE clock: 50 MHz, 20 ns period.
+vpulse #(.val0(0.0), .val1(1.0), .td(10n), .rise(10p), .fall(10p), .width(5n), .period(20n)) active_source(active_drive,gnd);
+
+// REF clock: 55.555... MHz, 18 ns period.
+vpulse #(.val0(0.0), .val1(1.0), .td(13n), .rise(10p), .fall(10p), .width(5n), .period(18n)) ref_source(ref_drive,gnd);
+
+// Reset is asserted during the QINC pulse generated at 67 ns.
+vpulse #(.val0(0.0), .val1(1.0), .td(68.5n), .rise(10p), .fall(10p), .width(6n), .period(500n)) reset_source(reset_drive,gnd);
+
+// Convert electrical stimuli to logic.
+c_a_d #(.model("logic")) active_converter(active,active_drive);
+c_a_d #(.model("logic")) ref_converter(ref,ref_drive);
+c_a_d #(.model("logic")) reset_converter(reset,reset_drive);
+
+// Single phase-frequency detector under test.
+pfd dut(qinc,qdec,active,ref,reset);
+
+// Convert logic signals to electrical probes for plotting.
+c_d_a #(.model("logic")) active_probe(active_probe_v,active);
+c_d_a #(.model("logic")) ref_probe(ref_probe_v,ref);
+c_d_a #(.model("logic")) qinc_probe(qinc_probe_v,qinc);
+c_d_a #(.model("logic")) qdec_probe(qdec_probe_v,qdec);
+c_d_a #(.model("logic")) reset_probe(reset_probe_v,reset);
+
+// Record both electrical probe values and native logic states.
+print tran v(active_probe_v) v(ref_probe_v) v(qinc_probe_v) v(qdec_probe_v) v(reset_probe_v) l(active) l(ref) l(qinc) l(qdec) l(reset) iter(0)
+tran 0 130n 10p > results/pfd.txt
+status notime

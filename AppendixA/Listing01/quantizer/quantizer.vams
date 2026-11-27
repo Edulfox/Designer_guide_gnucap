@@ -1,0 +1,45 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+// N-level quantizer from The Designer's Guide, Appendix A, Listing 1.
+module quantizer (out, in, clk);
+   parameter integer levels = 2;
+   parameter real vh = 1.0;
+   parameter real vl = -1.0;
+   parameter real vth = (vh + vl)/2.0;
+   parameter integer dir = 1;
+   parameter real td = 0.0;
+   parameter real tt = 0.0;
+   output out;
+   input in, clk;
+   electrical out, in, clk;
+   real quantized, delta;
+   integer level;
+   analog begin
+      @(cross(V(clk) - vth, dir) or initial_step) begin
+         delta = (vh - vl)/(levels - 1);
+         level = (V(in) - vl)/delta;
+         if (level < 0)
+            level = 0;
+         else if (level >= levels)
+            level = levels - 1;
+         quantized = level*delta + vl;
+      end
+      V(out) <+ transition(quantized, td, tt);
+   end
+endmodule

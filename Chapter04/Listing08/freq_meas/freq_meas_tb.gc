@@ -1,0 +1,56 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the digital frequency measurement model.
+//
+// Two independent clocks are measured simultaneously:
+// - clk100: 100 MHz -> expected frequency = 100 MHz
+// - clk25:   25 MHz -> expected frequency = 25 MHz
+//
+// The first rising edge only establishes the time reference.
+// A valid frequency measurement is expected from the second rising edge onward.
+
+load mgsim
+load vams/vpulse.so
+load ./freq_meas.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// 100 MHz clock: period = 10 ns.
+vpulse #(.val0(0.0), .val1(1.0), .td(5n), .rise(10p), .fall(10p), .width(5n), .period(10n)) source100(clk100_drive,gnd);
+
+// 25 MHz clock: period = 40 ns.
+vpulse #(.val0(0.0), .val1(1.0), .td(10n), .rise(10p), .fall(10p), .width(20n), .period(40n)) source25(clk25_drive,gnd);
+
+// Convert electrical clock stimuli to logic.
+c_a_d #(.model("logic")) converter100(clk100,clk100_drive);
+c_a_d #(.model("logic")) converter25(clk25,clk25_drive);
+
+// Devices under test.
+freq_meas dut100(clk100);
+freq_meas dut25(clk25);
+
+// Convert the logic clocks back to electrical signals for visualization.
+c_d_a #(.model("logic")) probe100(clk100_probe,clk100);
+c_d_a #(.model("logic")) probe25(clk25_probe,clk25);
+
+// Record both clocks and the measured frequencies.
+print tran v(clk100_probe) v(clk25_probe) freq(dut100) freq(dut25) iter(0)
+tran 0 250n 10p > results/freq_meas.txt

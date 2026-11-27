@@ -1,0 +1,59 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+
+module vco(out,ps,ns);
+
+parameter real f0=100k;
+parameter real kvco=10k;
+parameter real tick=1p;
+
+output out;
+
+electrical ps,ns;
+
+reg out;
+logic out;
+
+real vin;
+real frecuency;
+real phase;
+real last_time;
+real elapsed;
+
+initial begin
+out=0;
+vin=0.0;
+frecuency=f0;
+phase=0.0;
+last_time=0.0;
+end
+
+always @(timer(0,tick)) begin
+vin=V(ps,ns);
+frecuency=f0+kvco*vin;
+elapsed=$abstime-last_time;
+last_time=$abstime;
+phase=phase+frecuency*elapsed;
+
+if(phase>=0.5) begin
+phase=phase-0.5;
+out=!out;
+end
+end
+
+endmodule

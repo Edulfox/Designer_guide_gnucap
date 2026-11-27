@@ -1,0 +1,33 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+
+`include "disciplines.vams"
+`include "constants.vams"
+
+// Lossy inductor from Chapter 3, Listing 28.
+module lossy_ind (t1, t2);
+   parameter real esr = 0.01;
+   parameter real rcp = 1.0;
+   parameter real cp = 10f;
+   parameter real l = 1n;
+   parameter real h = 70k;
+   electrical t1, t2, n1, n2;
+   inout t1, t2;
+   resistor #(.r(rcp)) Rp(n2,t2);
+   skin_effect #(.r0(esr), .f0(2*esr*esr*h*h), .f1(1/(2*`M_PI*sqrt(l*cp)))) Hr(t1,n1);
+   capacitor #(.c(cp)) Cp(t1,n2);
+   inductor #(.l(l)) L(n1,t2);
+endmodule

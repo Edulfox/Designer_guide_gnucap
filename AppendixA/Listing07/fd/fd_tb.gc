@@ -1,0 +1,62 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2026 IHP-Open-PDK Authors
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//////////////////////////////////////////////////////////////////////////////
+//
+// Functional verification of the frequency divider.
+//
+// Input clock:
+//   1 GHz -> period = 1 ns
+//
+// Divider behavior:
+//   q toggles every 63 rising edges.
+//   One complete output period requires 126 input periods.
+//
+// Expected output frequency:
+//   1 GHz / 126 = 7.9365079 MHz
+//
+// Reset is asserted again during the simulation to verify
+// that the divider restarts its counting sequence correctly.
+
+load mgsim
+load vams/vpulse.so
+load ./fd.so
+
+verilog
+
+ground gnd;
+
+.model logic logic delay=1p rise=10p fall=10p vmax=1.0 vmin=0.0 thh=0.75 thl=0.25
+
+// 1 GHz input clock.
+vpulse #(.val0(0.0), .val1(1.0), .td(0.5n), .rise(10p), .fall(10p), .width(0.5n), .period(1n)) clock_source(clk_drive,gnd);
+
+vpulse #(.val0(1.0),.val1(0.0),.td(10n),.rise(10p),.fall(10p),.width(170n),.period(200n)) reset_source(reset_drive,gnd);
+
+// Convert electrical stimuli to logic.
+c_a_d #(.model("logic")) clock_converter(clk,clk_drive);
+c_a_d #(.model("logic")) reset_converter(reset,reset_drive);
+
+// Frequency divider under test.
+fd dut(out,clk,reset);
+
+// Logic probes.
+c_d_a #(.model("logic")) clock_probe(clk_probe_v,clk);
+c_d_a #(.model("logic")) reset_probe(reset_probe_v,reset);
+c_d_a #(.model("logic")) output_probe(out_probe_v,out);
+
+// Record input clock, reset and divided output.
+print tran v(clk_probe_v) v(reset_probe_v) v(out_probe_v) l(clk) l(reset) l(out) iter(0)
+tran 0 350n 20p > results/fd.txt
+status notime
